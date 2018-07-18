@@ -1,0 +1,11 @@
+{
+    "name": "streltcov/yandex-geocoder",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Петр Стрельцов",
+            "email": "streltsov83@yandex.ru"
+        }
+    ],
+    "require": {}
+}
