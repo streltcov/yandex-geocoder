@@ -7,5 +7,16 @@
             "email": "streltsov83@yandex.ru"
         }
     ],
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "streltcov\\YandexGeocoder\\": "",
+            "streltcov\\geocoder\\": "src",
+            "streltcov\\geocoder\\interfaces\\": "src/interfaces",
+            "streltcov\\geocoder\\exceptions\\": "src/exceptions"
+        }
+    }
 }

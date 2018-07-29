@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\yandexgeo;
+namespace streltcov\geocoder;
 
 /**
  * Class ContextObject
