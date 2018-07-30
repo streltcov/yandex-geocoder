@@ -5,7 +5,9 @@ namespace streltcov\geocoder;
 use streltcov\geocoder\interfaces\GeoDataInterface;
 
 /**
- * Class GeoObject
+ * Class GeoData
+ * Contains Yandex geocoder response data
+ *
  * @package app\models\yandexgeo
  */
 class GeoData implements GeoDataInterface
@@ -16,9 +18,14 @@ class GeoData implements GeoDataInterface
     private $featureMember;
     private $geoObjects = [];
 
+    //
+    private $query;
+
 
     public function __construct(string $address)
     {
+
+        $this->query = $address;
 
         $address = $this->filterAddress($address);
 
@@ -44,13 +51,8 @@ class GeoData implements GeoDataInterface
             $this->geoObjects[] = new GeoObject($geoobject);
         }
 
-        //var_dump($this->featureMember);
-        //var_dump($this->geoObjects);
         foreach ($this->geoObjects as $geo) {
             //var_dump($geo->description);
-            //var_dump($geo->name);
-            //var_dump($geo->coordinates);
-            //var_dump($geo->precision);
         }
 
     } // end function
@@ -108,5 +110,32 @@ class GeoData implements GeoDataInterface
     /**
      * End interface
      */
+
+
+    /**
+     * @return array
+     */
+    public function getLocations()
+    {
+
+        return $this->geoObjects;
+
+    } // end function
+
+
+    /**
+     * @param int $num
+     * @return mixed|string
+     */
+    public function setLocation(int $num)
+    {
+
+        if (isset($this->geoObjects[$num])) {
+            return $this->geoObjects[$num];
+        } else {
+            return "Requested location is not set";
+        }
+
+    } // end function
 
 } // end class

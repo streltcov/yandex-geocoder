@@ -3,11 +3,11 @@
 namespace streltcov\geocoder;
 
 /**
- * Class ContextObject
+ * Class Context
  *
- * @package app\models\yandexgeo
+ * @package streltcov\geocoder
  */
-class ContextObject
+class Context
 {
 
     private $context;
