@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder;
 
+use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\interfaces\GeoDataInterface;
 
 /**

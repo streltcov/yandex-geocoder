@@ -1,6 +1,8 @@
 <?php
 
-namespace streltcov\geocoder;
+namespace streltcov\geocoder\errors;
+
+use streltcov\geocoder\GeoObject;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -17,19 +19,44 @@ namespace streltcov\geocoder;
  * limitations under the License
  */
 
+/**
+ * Class ErrorObject
+ *
+ * @package streltcov\geocoder\errors
+ */
 class ErrorObject extends GeoObject
 {
 
     public function __construct()
     {
-        //parent::__construct($geoobject);
+
+        // TODO: remove after update getExact() from GeoData
+        $this->precision = 'exact';
+
+        // error properties
         $error_message = 'Error, no results found; please, check requested data';
         $this->description = $error_message;
         $this->name = $error_message;
         $this->envelope = $error_message;
-        $this->precision = 'exact';
         $this->metadata = $error_message;
+        $this->coordinates = $error_message;
+        $this->address = $error_message;
+        $this->addressdetails = $error_message;
 
     } // end construct
+
+
+    /**
+     * parent method redefinition - returns ContextError object instead Context object
+     *
+     * @param null $kind
+     * @return \streltcov\geocoder\errors\ContextError
+     */
+    public function requestContext($kind = null)
+    {
+
+        return new ContextError();
+
+    } // end function
 
 } // end class
