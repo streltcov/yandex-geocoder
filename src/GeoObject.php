@@ -16,35 +16,35 @@ class GeoObject implements GeoObjectInterface
     /**
      * @var \stdClass
      */
-    private $metadata;
+    protected $metadata;
     /**
      * @var string
      */
-    private $description;
+    protected $description;
     /**
      * @var string
      */
-    private $name;
+    protected $name;
     /**
      * @var string
      */
-    private $coordinates;
+    protected $coordinates;
     /**
      * @var string
      */
-    private $precision;
+    protected $precision;
     /**
      * @var \stdClass
      */
-    private $address;
+    protected $address;
     /**
      * @var \stdClass
      */
-    private $addressdetails;
+    protected $addressdetails;
     /**
      * @var
      */
-    private $envelope;
+    protected $envelope;
 
 
 
@@ -75,6 +75,14 @@ class GeoObject implements GeoObjectInterface
 
         $this->precision == 'exact' ? $exact = true : $exact = false;
         return $exact;
+
+    } // end function
+
+
+    public function requestContext()
+    {
+
+        return new Context($this->getCoordinates());
 
     } // end function
 
@@ -148,7 +156,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getCountrycode()
+    public function getCountryCode()
     {
 
         return $this->addressdetails->CountryNameCode;

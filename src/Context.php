@@ -13,7 +13,7 @@ class Context
     private $context;
 
 
-    public function __construct()
+    public function __construct($coordinates)
     {
 
     } // end construct

@@ -2,20 +2,19 @@
 
 namespace streltcov\YandexGeocoder;
 
-use streltcov\geocoder\interfaces\GeoCoderInterface;
 use streltcov\geocoder\GeoData;
-use streltcov\geocoder\ContextObject;
+use streltcov\geocoder\Context;
 
 /**
  * Class GeoCoder
  *
  * @package app\models\yandexcoder
  */
-class GeoCoder implements GeoCoderInterface
+class GeoCoder
 {
 
     /**
-     * creates and returns geodata object with address parameter
+     * creates and returns GeoData object with address parameter
      *
      * @param string $address
      * @return GeoData
@@ -29,15 +28,15 @@ class GeoCoder implements GeoCoderInterface
 
 
     /**
-     * creates and returns context object with requested coordinates
+     * creates and returns geocoder/Context object with requested coordinates
      *
      * @param string $coordinates
-     * @return ContextObject
+     * @return Context
      */
     public static function searchContext($coordinates)
     {
 
-        return new ContextObject($coordinates);
+        return new Context($coordinates);
 
     } // end function
 

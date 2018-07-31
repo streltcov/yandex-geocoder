@@ -14,9 +14,12 @@ class GeoData implements GeoDataInterface
 {
 
     //private $address;
+    private $geocoderMetaData;
     private $metaDataProperty;
     private $featureMember;
     private $geoObjects = [];
+
+    private $error = false;
 
     //
     private $query;
@@ -30,10 +33,11 @@ class GeoData implements GeoDataInterface
         $address = $this->filterAddress($address);
 
         // getting response object (stdClass)
-        $response = json_decode(Api::requestAddress($address));
+        $response = json_decode(Api::request($address));
+        //var_dump($response);
         $response = (object)$response->response->GeoObjectCollection;
-
         $this->init($response);
+        var_dump($this->geocoderMetaData);
 
     } // end construct
 
@@ -46,13 +50,20 @@ class GeoData implements GeoDataInterface
 
         $this->metaDataProperty = $response->metaDataProperty;
         $this->featureMember = $response->featureMember;
+        $this->geocoderMetaData = $this->metaDataProperty->GeocoderResponseMetaData;
 
-        foreach ($this->featureMember as $geoobject) {
-            $this->geoObjects[] = new GeoObject($geoobject);
-        }
+        // checking found results - if 0 - error flag is set up
+        $found = (int)$this->geocoderMetaData->found;
+        $found != 0 ? $this->error = true : $this->error = false;
 
-        foreach ($this->geoObjects as $geo) {
-            //var_dump($geo->description);
+        var_dump($this->error);
+
+        if ($this->error != false) {
+            foreach ($this->featureMember as $geoobject) {
+                $this->geoObjects[] = new GeoObject($geoobject);
+            }
+        } else {
+            $this->geoObjects[] = new ErrorObject();
         }
 
     } // end function

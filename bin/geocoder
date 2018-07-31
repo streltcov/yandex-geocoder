@@ -1,0 +1,82 @@
+#!/usr/bin/php
+
+<?php
+
+use streltcov\YandexGeocoder\GeoCoder;
+
+system('clear');
+
+$autoload = '../vendor/autoload.php';
+require_once $autoload;
+
+/**
+ * @param string $address
+ */
+$requestaddress = function ($address) {
+    system('clear');
+    $coder = GeoCoder::search($address);
+
+    $getexact = function ()
+    {
+
+    };
+
+    $command = 0;
+    while ($command != 7) {
+        echo "Data requested" . PHP_EOL;
+        echo PHP_EOL;
+        echo "1 - get exact value" . PHP_EOL;
+        echo "7 - go back". PHP_EOL;
+        $command = trim(fgets(STDIN));
+        switch ($command) {
+            case '1':
+                echo PHP_EOL;
+                echo "exact value - " . $coder->getExact()->name;
+                break;
+            case '7':
+                system('clear');
+                return;
+                break;
+        }
+    }
+
+};
+
+
+/**
+ * @param string $coordinates
+ */
+$requestcontext = function ($coordinates) {
+
+};
+
+while (true) {
+
+    echo PHP_EOL;
+    echo "1 - request address data" . PHP_EOL;
+    echo "2 - request context data (coordinates)" . PHP_EOL;
+    echo "3 - exit" . PHP_EOL;
+    echo "(default - 1): ";
+    $answer = trim(fgets(STDIN));
+
+    switch ($answer) {
+        case '1':
+            echo "Type address to request data:";
+            $address = trim(fgets(STDIN));
+            $requestaddress($address);
+            break;
+        case '2':
+            echo "Type coordinates to request context data:";
+            $coordinates = trim(fgets(STDIN));
+            $requestcontext($coordinates);
+            break;
+        case'3':
+            system('clear');
+            exit();
+        default:
+            break;
+    }
+
+    system('clear');
+
+}

@@ -2,6 +2,8 @@
 
 namespace streltcov\geocoder\interfaces;
 
+use streltcov\geocoder\Context;
+
 /**
  * Interface GeoObjectInterface
  * @package streltcov\geocoder\interfaces
@@ -16,19 +18,38 @@ interface GeoObjectInterface
     public function isExact();
 
     /**
+     * @return Context
+     */
+    public function requestContext();
+
+    /**
      * GETTERS
      */
 
+    /**
+     * @return string
+     */
     public function getPostalcode();
 
-    public function getCountrycode();
+    /**
+     * @return string
+     */
+    public function getCountryCode();
 
+    /**
+     * @return string
+     */
     public function getCountry();
+
+    /**
+     * @return string
+     */
+    public function getCoordinates();
 
     /**
      * returns object coordinates
      *
-     * @return
+     * @return array
      */
     public function getPoint();
     
