@@ -15,22 +15,21 @@ class Api
     private static $response;
     private static $responsecode;
 
-    private static $languages = [
-        'RU' => 'ru-ru',
-        'US' => 'en-us',
-        'EN' => 'en-RU',
+    private static $lang = [
+        'RU' => 'ru_RU',
+        'US' => 'en_US',
+        'EN' => 'en_RU',
         'UA' => 'uk_UA',
         'BY' => 'be_BY',
         'TR' => 'tr_TR'
     ];
 
-    private static $kinds = [
+    private static $kind = [
         'house',
         'street',
         'metro',
         'district',
         'locality'
-
     ];
 
     private static $parameters = [
@@ -46,12 +45,6 @@ class Api
     ];
 
 
-    private function initConnection(string $link)
-    {
-
-    } // end function
-
-
     /**
      * performs request to Yandex GeoCoder with set up parameters
      *
@@ -62,8 +55,8 @@ class Api
     {
 
         $response = '';
-        //$link = static::$api_url . $address . '&format=json';
         $link = static::setLink($address);
+
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_URL, $link);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
@@ -77,15 +70,43 @@ class Api
 
 
     /**
+     *
+     * @param string $coordinates
+     * @param string $kind
+     * @return mixed|string
+     */
+    public static function requestContext($coordinates, $kind = null)
+    {
+
+        $response = '';
+        $link = static::setLink($coordinates, $kind);
+
+        $connection = curl_init();
+        curl_setopt($connection, CURLOPT_URL, $link);
+        curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($connection);
+        static::$responsecode = curl_getinfo($connection, CURLINFO_HTTP_CODE);
+        curl_close($connection);
+
+        return $response;
+
+    } // end function
+
+
+
+    /**
      * sets locale for API request
+     * available languages - russian, english, english(USA), belorussian, turkish, ukrainian
+     * (values listed in static::$lang array)
      *
      * @param string $locale
+     * @return void
      */
     public static function setLocale($locale)
     {
 
-        if (in_array($locale, static::$languages)) {
-            static::$parameters['lang'] = static::$languages[$locale];
+        if (in_array($locale, array_keys(static::$lang))) {
+            static::$parameters['lang'] = static::$lang[$locale];
         }
 
     } // end function
@@ -94,18 +115,19 @@ class Api
     /**
      * creates query link from request string and current API parameters
      *
+     * @param string $kind
      * @param string $base
      * @return string
      */
-    private static function setLink($base)
+    private static function setLink($base, $kind = null)
     {
 
         $link = static::$api_url . $base . '&format=json';
-        $kind = '';
+        $kind != null ? $kind = $kind : $kind = '';
         $skip = '';
 
         if (static::$parameters['lang'] != null) {
-            $lang = 'lang=' . static::$parameters['lang'];
+            $lang = '&lang=' . static::$parameters['lang'];
         } else {
             $lang = '';
         }
@@ -126,7 +148,9 @@ class Api
      */
     private static function getResponseCode()
     {
+
         return static::$responsecode;
-    }
+
+    } // end function
 
 } // end class

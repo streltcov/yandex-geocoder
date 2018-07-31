@@ -13,8 +13,17 @@ class Context
     private $context;
 
 
-    public function __construct($coordinates)
+    /**
+     * Context constructor
+     *
+     * @param string $coordinates
+     * @param string|null $kind
+     */
+    public function __construct($coordinates, $kind = null)
     {
+
+        $response = json_decode(Api::requestContext($coordinates, $kind))->response;
+        var_dump($response);
 
     } // end construct
 

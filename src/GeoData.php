@@ -3,6 +3,7 @@
 namespace streltcov\geocoder;
 
 use streltcov\geocoder\interfaces\GeoDataInterface;
+use streltcov\YandexGeocoder\GeoCoder;
 
 /**
  * Class GeoData
@@ -34,10 +35,8 @@ class GeoData implements GeoDataInterface
 
         // getting response object (stdClass)
         $response = json_decode(Api::request($address));
-        //var_dump($response);
         $response = (object)$response->response->GeoObjectCollection;
         $this->init($response);
-        var_dump($this->geocoderMetaData);
 
     } // end construct
 
@@ -56,7 +55,11 @@ class GeoData implements GeoDataInterface
         $found = (int)$this->geocoderMetaData->found;
         $found != 0 ? $this->error = true : $this->error = false;
 
-        var_dump($this->error);
+        switch ($this->error) {
+
+        }
+
+        //var_dump($this->error);
 
         if ($this->error != false) {
             foreach ($this->featureMember as $geoobject) {
@@ -67,6 +70,27 @@ class GeoData implements GeoDataInterface
         }
 
     } // end function
+
+
+    private function initf()
+    {
+
+        foreach ($this->featureMember as $geo) {
+            $this->geoObjects = new GeoObject($geo);
+        }
+
+    }
+
+
+    /**
+     *
+     */
+    private function initError()
+    {
+
+        $this->geoObjects[] = new ErrorObject();
+
+    }
 
 
 
@@ -135,10 +159,10 @@ class GeoData implements GeoDataInterface
 
 
     /**
-     * @param int $num
+     * @param integer $num
      * @return mixed|string
      */
-    public function setLocation(int $num)
+    public function setLocation($num)
     {
 
         if (isset($this->geoObjects[$num])) {

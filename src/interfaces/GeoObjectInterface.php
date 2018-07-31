@@ -18,9 +18,10 @@ interface GeoObjectInterface
     public function isExact();
 
     /**
+     * @param string $kind
      * @return Context
      */
-    public function requestContext();
+    public function requestContext($kind);
 
     /**
      * GETTERS

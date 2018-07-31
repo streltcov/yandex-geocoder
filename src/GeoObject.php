@@ -79,10 +79,17 @@ class GeoObject implements GeoObjectInterface
     } // end function
 
 
-    public function requestContext()
+    /**
+     * creates and returns Context object with coordinates from current geoobject
+     *
+     * @param string $kind
+     * @return Context
+     */
+    public function requestContext($kind = null)
     {
 
-        return new Context($this->getCoordinates());
+        $coordinates = $this->getCoordinates();
+        return new Context($coordinates, $kind);
 
     } // end function
 
