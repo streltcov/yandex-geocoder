@@ -2,6 +2,8 @@
 
 namespace streltcov\geocoder;
 
+use streltcov\geocoder\interfaces\QueryInterface;
+
 /**
  * Copyright 2018 Peter Streltsov
  *
@@ -22,11 +24,11 @@ namespace streltcov\geocoder;
  *
  * @package streltcov\geocoder
  */
-class Context
+class ContextData implements QueryInterface
 {
 
-    private $context;
-
+    private $metaData;
+    private $featureMember;
 
     /**
      * Context constructor
@@ -37,32 +39,40 @@ class Context
     public function __construct($coordinates, $kind = null)
     {
 
-        $response = json_decode(Api::requestContext($coordinates, $kind))->response;
-        var_dump($response);
+        $response = json_decode(Api::requestContext($coordinates, $kind))->response->GeoObjectCollection;
+        //var_dump($response);
+        $this->metaData = $response->metaDataProperty;
+        $this->featureMember = $response->featureMember;
+        //var_dump($this->featureMember);
 
     } // end construct
 
 
-    /**
-     * returns object location district
-     */
-    public function getDistrict()
+    public function isExact()
     {
+        // TODO: Implement isExact() method.
+    }
 
-        // TODO: implement method;
-
-    } // end function
-
-
-
-    /**
-     * lists nearest metro stations
-     */
-    public function getNearestStations()
+    public function exact()
     {
+        // TODO: Implement exact() method.
+    }
 
-        // TODO: implement method;
 
-    } // end function
+    public function select()
+    {
+        // TODO: Implement select() method.
+    }
+
+
+    public function one()
+    {
+        // TODO: Implement one() method.
+    }
+
+    public function all()
+    {
+        // TODO: Implement all() method.
+    }
 
 } // end class

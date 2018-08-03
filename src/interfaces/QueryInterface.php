@@ -5,20 +5,25 @@ namespace streltcov\geocoder\interfaces;
 use streltcov\geocoder\GeoObject;
 
 /**
- * Interface GeoDataInterface
+ * Interface QueryInterface
+ * contains methods for geocoder query build
+ *
  * @package streltcov\geocoder\interfaces
  */
-interface GeoDataInterface
+interface QueryInterface
 {
-
-    /**
-     * @return GeoObject
-     */
-    public function getExact();
 
     /**
      * @return boolean
      */
     public function isExact();
+
+    public function select();
+
+    public function exact();
+
+    public function one();
+
+    public function all();
 
 } // end interface

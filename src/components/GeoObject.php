@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder;
 
+use streltcov\geocoder\components\Component;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
 
 /**
@@ -25,7 +26,7 @@ use streltcov\geocoder\interfaces\GeoObjectInterface;
  *
  * @package streltcov\geocoder
  */
-class GeoObject implements GeoObjectInterface
+class GeoObject extends Component implements GeoObjectInterface
 {
 
     /**
@@ -112,6 +113,18 @@ class GeoObject implements GeoObjectInterface
     /**
      * GETTERS
      */
+
+    public function getKind()
+    {
+        // TODO: Implement getKind() method.
+    }
+
+
+    public function getHeader()
+    {
+        // TODO: Implement getHeader() method.
+    }
+
 
     /**
      * @return mixed

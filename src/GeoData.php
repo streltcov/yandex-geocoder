@@ -4,6 +4,7 @@ namespace streltcov\geocoder;
 
 use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\interfaces\GeoDataInterface;
+use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -26,7 +27,7 @@ use streltcov\geocoder\interfaces\GeoDataInterface;
  *
  * @package streltcov\yandex-geocoder
  */
-class GeoData implements GeoDataInterface
+class GeoData implements QueryInterface
 {
 
     private $geocoderMetaData;
@@ -107,7 +108,6 @@ class GeoData implements GeoDataInterface
     }
 
 
-
     /**
      * @param string $address
      * @return string
@@ -121,26 +121,10 @@ class GeoData implements GeoDataInterface
     } // end function
 
 
-    /**
-     * GeoDataInterface implementation
-     */
 
     /**
-     * @return boolean|GeoObject
+     * QueryInterface implementation
      */
-    public function getExact()
-    {
-
-        foreach ($this->geoObjects as $geoObject) {
-            if ($geoObject->isExact()) {
-                return $geoObject;
-            }
-        }
-
-        return false;
-
-    } // end function
-
 
     /**
      * checks if exist exact address in response
@@ -156,35 +140,36 @@ class GeoData implements GeoDataInterface
 
     } // end function
 
-    /**
-     * End interface
-     */
+
+    public function select()
+    {
+        // TODO: Implement select() method.
+    }
 
 
-    /**
-     * @return array
-     */
-    public function getLocations()
+    public function exact()
     {
 
-        return $this->geoObjects;
-
-    } // end function
-
-
-    /**
-     * @param integer $num
-     * @return mixed|string
-     */
-    public function setLocation($num)
-    {
-
-        if (isset($this->geoObjects[$num])) {
-            return $this->geoObjects[$num];
-        } else {
-            return "Requested location is not set";
+        foreach ($this->geoObjects as $geoObject) {
+            if ($geoObject->isExact()) {
+                return $geoObject;
+            }
         }
 
+        return false;
+
     } // end function
+
+
+    public function one()
+    {
+
+    }
+
+
+    public function all()
+    {
+
+    }
 
 } // end class
