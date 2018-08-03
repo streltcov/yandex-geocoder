@@ -3,7 +3,7 @@
 namespace streltcov\geocoder;
 
 use streltcov\geocoder\errors\ErrorObject;
-use streltcov\geocoder\interfaces\GeoDataInterface;
+use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -87,16 +87,6 @@ class GeoData implements QueryInterface
     } // end function
 
 
-    private function initf()
-    {
-
-        foreach ($this->featureMember as $geo) {
-            $this->geoObjects = new GeoObject($geo);
-        }
-
-    }
-
-
     /**
      *
      */
@@ -141,10 +131,16 @@ class GeoData implements QueryInterface
     } // end function
 
 
-    public function select()
+    /**
+     * @param null $parameters
+     * @return $this
+     */
+    public function select($parameters = null)
     {
-        // TODO: Implement select() method.
-    }
+
+        return $this;
+
+    } // end function
 
 
     public function exact()
@@ -161,15 +157,21 @@ class GeoData implements QueryInterface
     } // end function
 
 
-    public function one()
+    public function one($parameters = null)
     {
 
-    }
+        if ($parameters == null) {
+            return $this->geoObjects[0];
+        }
+
+    } // end function
 
 
     public function all()
     {
 
-    }
+        return $this->geoObjects;
+
+    } // end function
 
 } // end class

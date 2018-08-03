@@ -1,6 +1,6 @@
 <?php
 
-namespace streltcov\geocoder;
+namespace streltcov\geocoder\components;
 
 use streltcov\geocoder\components\Component;
 use streltcov\geocoder\interfaces\GeoObjectInterface;

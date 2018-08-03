@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder;
 
+use streltcov\geocoder\interfaces\ContextInterface;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -24,7 +25,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  *
  * @package streltcov\geocoder
  */
-class ContextData implements QueryInterface
+class ContextData implements QueryInterface, ContextInterface
 {
 
     private $metaData;
@@ -47,6 +48,10 @@ class ContextData implements QueryInterface
 
     } // end construct
 
+
+    /**
+     * QueryInterface
+     */
 
     public function isExact()
     {
@@ -74,5 +79,27 @@ class ContextData implements QueryInterface
     {
         // TODO: Implement all() method.
     }
+
+    /**
+     * END INTERFACE
+     */
+
+    /**
+     * ContextInterface
+     */
+
+    public function skip()
+    {
+        // TODO: Implement skip() method.
+    }
+
+    public function kind()
+    {
+        // TODO: Implement kind() method.
+    }
+
+    /**
+     * END INTERFACE
+     */
 
 } // end class
