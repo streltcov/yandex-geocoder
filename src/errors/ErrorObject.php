@@ -2,7 +2,7 @@
 
 namespace streltcov\geocoder\errors;
 
-use streltcov\geocoder\GeoObject;
+use streltcov\geocoder\components\GeoObject;
 
 /**
  * Copyright 2018 Peter Streltsov

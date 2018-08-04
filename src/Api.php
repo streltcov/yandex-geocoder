@@ -122,7 +122,10 @@ class Api
 
         if (in_array($locale, array_keys(static::$lang))) {
             static::$parameters['lang'] = static::$lang[$locale];
+            return true;
         }
+
+        return false;
 
     } // end function
 
