@@ -26,7 +26,7 @@ use streltcov\geocoder\interfaces\GeoObjectInterface;
  *
  * @package streltcov\geocoder
  */
-class GeoObject extends Component implements GeoObjectInterface
+class GeoObject implements GeoObjectInterface
 {
 
     /**

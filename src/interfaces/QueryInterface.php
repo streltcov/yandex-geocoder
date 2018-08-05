@@ -16,7 +16,7 @@ interface QueryInterface
     /**
      * @return boolean
      */
-    public function isExact();
+    public function hasExact();
 
     public function select();
 

@@ -3,7 +3,8 @@
 namespace streltcov\YandexGeocoder;
 
 use streltcov\geocoder\Api;
-use streltcov\geocoder\GeoData;
+use streltcov\geocoder\data\Response;
+//use streltcov\geocoder\GeoData;
 use streltcov\geocoder\ContextData;
 
 /**
@@ -38,7 +39,7 @@ class GeoCoder
     public static function search($address)
     {
 
-        return new GeoData($address);
+        return Response::create('GeoData', $address);
 
     } // end function
 

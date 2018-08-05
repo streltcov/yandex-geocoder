@@ -72,12 +72,16 @@ class ContextData implements QueryInterface, ContextInterface
 
     public function one()
     {
-        // TODO: Implement one() method.
+
+        return $this->geoObjects[0];
+
     }
 
     public function all()
     {
-        // TODO: Implement all() method.
+
+        return $this->geoObjects;
+
     }
 
     /**

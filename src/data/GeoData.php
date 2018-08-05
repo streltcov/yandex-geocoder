@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder;
 
+use streltcov\geocoder\components\Response;
 use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\interfaces\QueryInterface;
@@ -27,7 +28,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  *
  * @package streltcov\yandex-geocoder
  */
-class GeoData implements QueryInterface
+class GeoData extends Response implements QueryInterface
 {
 
     private $geocoderMetaData;
@@ -37,14 +38,9 @@ class GeoData implements QueryInterface
 
     private $error = false;
 
-    //
-    private $query;
-
-
+    /**
     public function __construct(string $address)
     {
-
-        $this->query = $address;
 
         $address = $this->filterAddress($address);
 
@@ -55,11 +51,13 @@ class GeoData implements QueryInterface
 
     } // end construct
 
+    */
+
 
     /**
      * @param \stdClass $response
      */
-    private function init(\stdClass $response)
+    protected function init(\stdClass $response)
     {
 
         $this->metaDataProperty = $response->metaDataProperty;
@@ -115,20 +113,6 @@ class GeoData implements QueryInterface
     /**
      * QueryInterface implementation
      */
-
-    /**
-     * checks if exist exact address in response
-     *
-     * @return boolean
-     */
-    public function isExact()
-    {
-
-        $exact = false;
-
-        return $exact;
-
-    } // end function
 
 
     /**
