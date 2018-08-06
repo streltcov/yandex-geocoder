@@ -1,8 +1,8 @@
 <?php
 
-namespace streltcov\geocoder;
+namespace streltcov\geocoder\data;
 
-use streltcov\geocoder\components\Response;
+use streltcov\geocoder\data\Response;
 use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\interfaces\QueryInterface;
@@ -33,8 +33,8 @@ class GeoData extends Response implements QueryInterface
 
     private $geocoderMetaData;
     private $metaDataProperty;
-    private $featureMember;
-    private $geoObjects = [];
+    protected $featureMember;
+    protected $geoObjects = [];
 
     private $error = false;
 
@@ -60,19 +60,13 @@ class GeoData extends Response implements QueryInterface
     protected function init(\stdClass $response)
     {
 
-        $this->metaDataProperty = $response->metaDataProperty;
-        $this->featureMember = $response->featureMember;
-        $this->geocoderMetaData = $this->metaDataProperty->GeocoderResponseMetaData;
-
         // checking found results - if 0 - error flag is set up
-        $found = (int)$this->geocoderMetaData->found;
+        /*$found = (int)$this->geocoderMetaData->found;
         $found != 0 ? $this->error = true : $this->error = false;
 
         switch ($this->error) {
 
         }
-
-        //var_dump($this->error);
 
         if ($this->error != false) {
             foreach ($this->featureMember as $geoobject) {
@@ -80,7 +74,7 @@ class GeoData extends Response implements QueryInterface
             }
         } else {
             $this->geoObjects[] = new ErrorObject();
-        }
+        }*/
 
     } // end function
 

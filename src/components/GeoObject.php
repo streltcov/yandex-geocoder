@@ -2,7 +2,7 @@
 
 namespace streltcov\geocoder\components;
 
-use streltcov\geocoder\components\Component;
+use streltcov\geocoder\ContextData;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
 
 /**
@@ -58,9 +58,13 @@ class GeoObject implements GeoObjectInterface
      */
     protected $addressdetails;
     /**
-     * @var
+     * @var string
      */
     protected $envelope;
+    /**
+     * @var string
+     */
+    protected $kind;
 
 
 
@@ -98,14 +102,15 @@ class GeoObject implements GeoObjectInterface
     /**
      * creates and returns Context object with coordinates from current geoobject
      *
+     * @param int $skip
      * @param string $kind
-     * @return Context
+     * @return ContextData
      */
-    public function requestContext($kind = null)
+    public function requestContext($kind = null, $skip = null)
     {
 
         $coordinates = $this->getCoordinates();
-        return new Context($coordinates, $kind);
+        return new ContextData($coordinates, $kind);
 
     } // end function
 
@@ -116,13 +121,13 @@ class GeoObject implements GeoObjectInterface
 
     public function getKind()
     {
-        // TODO: Implement getKind() method.
+        // TODO: Implement getKind() method
     }
 
 
     public function getHeader()
     {
-        // TODO: Implement getHeader() method.
+        // TODO: Implement getHeader() method
     }
 
 

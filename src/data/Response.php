@@ -1,28 +1,59 @@
 <?php
 
-namespace streltcov\geocoder\components;
+namespace streltcov\geocoder\data;
 
 use streltcov\geocoder\Api;
+use streltcov\geocoder\components\GeoObject;
+use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Class Component
+ *
  * @package streltcov\geocoder
  */
 abstract class Response implements QueryInterface
 {
 
     /**
-     *
+     * @var string
      */
-
-    protected $metaData;
-    protected $featureMember;
-    protected $geoObjects = [];
+    protected $request;
 
     /**
+     * number of results found in response
      *
+     * @var int
      */
+    protected $results;
+
+    /**
+     * error flag
+     * sets up true in case no valid results found
+     *
+     * @var bool
+     */
+    protected $error;
+
+    /**
+     * object, contains response metadata
+     *
+     * @var \stdClass
+     */
+    protected $metaData;
+
+    /**
+     * @var \stdClass
+     */
+    protected $featureMember;
+
+    /**
+     * array, contains GeoObject
+     *
+     * @var array
+     */
+    protected $geoObjects = [];
+
 
     /**
      * Response constructor
@@ -31,28 +62,76 @@ abstract class Response implements QueryInterface
     final public function __construct($query)
     {
 
-        $api_response = (object)json_decode(Api::request($query));
+        $api_response = (object)json_decode(Api::request($query))
+        ->response
+        ->GeoObjectCollection;
 
-        $this->init();
+        $this->metaData = $api_response->metaDataProperty->GeocoderResponseMetaData;
+        $this->results = (int)$this->metaData->results;
+        $this->featureMember = $api_response->featureMember;
+        $this->results == 0 ? $this->error = true : $this->error = false;
+
+        switch ($this->error) {
+            case false:
+                $this->init($api_response);
+                break;
+            case true:
+                $this->initError($api_response);
+                break;
+        }
+
+        $this->init($api_response);
 
     } // end construct
 
+
+    
+    /**
+     * @param $class
+     * @param $query
+     * @return mixed
+     */
     public static function create($class, $query)
     {
 
-        return new $class($query);
-
-    } // end function
-
-    protected function init()
-    {
+        $classname = 'streltcov\geocoder\data\\' . $class;
+        return new $classname($query);
 
     } // end function
 
 
 
     /**
-     * checks if exist exact address in response
+     * inits geoobjects for each found location
+     *
+     * @param \stdClass $response
+     */
+    protected function init(\stdClass $response)
+    {
+
+        foreach ($this->featureMember as $item) {
+            $this->geoObjects[] = new GeoObject($item);
+        }
+
+    } // end function
+
+
+    /**
+     * inits geoobject properties with error object if nothing found or query incorrect
+     *
+     * @param \stdClass $response
+     */
+    protected function initError(\stdClass $response)
+    {
+
+        $this->geoObjects[] = new ErrorObject();
+
+    } // end function
+
+
+
+    /**
+     * checks if exist exact result in response
      *
      * @return boolean
      */

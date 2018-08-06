@@ -53,7 +53,7 @@ class ContextData implements QueryInterface, ContextInterface
      * QueryInterface
      */
 
-    public function isExact()
+    public function hasExact()
     {
         // TODO: Implement isExact() method.
     }
