@@ -36,7 +36,7 @@ class GeoData extends Response implements QueryInterface
     protected $featureMember;
     protected $geoObjects = [];
 
-    private $error = false;
+    protected $error = false;
 
     /**
     public function __construct(string $address)
@@ -57,7 +57,7 @@ class GeoData extends Response implements QueryInterface
     /**
      * @param \stdClass $response
      */
-    protected function init(\stdClass $response)
+    /*protected function init(\stdClass $response)
     {
 
         // checking found results - if 0 - error flag is set up
@@ -76,13 +76,13 @@ class GeoData extends Response implements QueryInterface
             $this->geoObjects[] = new ErrorObject();
         }*/
 
-    } // end function
+    //} // end function
 
 
     /**
-     *
+     * @param \stdClass $response
      */
-    private function initError()
+    protected function initError(\stdClass $response)
     {
 
         $this->geoObjects[] = new ErrorObject();

@@ -39,12 +39,12 @@ class GeoCoderTest extends TestCase
 
     public function testMethodSearch()
     {
-        $this->assertEquals('streltcov\geocoder\GeoData', get_class($this->search));
+        $this->assertEquals('streltcov\geocoder\data\GeoData', get_class($this->search));
     }
 
     public function testMethodSearchContext()
     {
-        $this->assertEquals('streltcov\geocoder\ContextData', get_class($this->context));
+        $this->assertEquals('streltcov\geocoder\data\ContextData', get_class($this->context));
     }
 
     public function testMethods()

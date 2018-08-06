@@ -2,7 +2,7 @@
 
 namespace streltcov\geocoder\components;
 
-use streltcov\geocoder\ContextData;
+use streltcov\geocoder\data\ContextData;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
 
 /**
@@ -64,10 +64,26 @@ class GeoObject implements GeoObjectInterface
     /**
      * @var string
      */
+    protected $street = null;
+    /**
+     * @var string
+     */
+    protected $locality;
+    /**
+     * @var string
+     */
+    protected $province = null;
+    /**
+     * @var string
+     */
     protected $kind;
 
 
-
+    /**
+     * GeoObject constructor
+     *
+     * @param \stdClass $geoobject
+     */
     public function __construct(\stdClass $geoobject)
     {
 
@@ -77,12 +93,41 @@ class GeoObject implements GeoObjectInterface
         $this->coordinates = $response->Point->pos;
         $this->envelope = $response->boundedBy->Envelope;
         $this->metadata = $response->metaDataProperty->GeocoderMetaData;
-        $this->precision = $this->metadata->precision;
-        $this->address = (object)$this->metadata->Address;
-        $this->addressdetails = (object)$this->metadata->AddressDetails->Country;
+        $this->init();
+
         unset($response);
 
     } // end construct
+
+
+
+    /**
+     *
+     */
+    protected function init()
+    {
+
+        $this->precision = $this->metadata->precision;
+        $this->kind = $this->metadata->kind;
+        $this->address = (object)$this->metadata->Address;
+        $this->addressdetails = (object)$this->metadata->AddressDetails->Country;
+
+        //var_dump($this->metadata->Address);
+
+        $components = $this->metadata->Address->Components;
+
+        foreach ($components as $item) {
+            if ($item->kind == 'province' && $this->province == null) {
+                $this->province = $item->name;
+            } elseif ($item->kind == 'street') {
+                $this->street = $item->name;
+            } elseif ($item->kind == 'locality') {
+                $this->locality = $item->name;
+            }
+        }
+        
+    } // end function
+
 
 
     /**
@@ -119,10 +164,16 @@ class GeoObject implements GeoObjectInterface
      * GETTERS
      */
 
+
+    /**
+     * @return string
+     */
     public function getKind()
     {
-        // TODO: Implement getKind() method
-    }
+
+        return $this->kind;
+
+    } // end function
 
 
     public function getHeader()

@@ -1,7 +1,8 @@
 <?php
 
-namespace streltcov\geocoder;
+namespace streltcov\geocoder\data;
 
+use streltcov\geocoder\Api;
 use streltcov\geocoder\interfaces\ContextInterface;
 use streltcov\geocoder\interfaces\QueryInterface;
 

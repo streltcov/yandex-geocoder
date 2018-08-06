@@ -4,8 +4,8 @@ namespace streltcov\YandexGeocoder;
 
 use streltcov\geocoder\Api;
 use streltcov\geocoder\data\Response;
-//use streltcov\geocoder\GeoData;
-use streltcov\geocoder\ContextData;
+use streltcov\geocoder\data\GeoData;
+use streltcov\geocoder\data\ContextData;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -49,7 +49,7 @@ class GeoCoder
      *
      * @param string $kind
      * @param string $coordinates
-     * @return Context
+     * @return ContextData
      */
     public static function searchContext($coordinates, $kind = null)
     {
