@@ -32,6 +32,13 @@ interface GeoObjectInterface
      */
     public function getPostalcode();
 
+
+    /**
+     * @return string
+     */
+    public function getAddress();
+
+
     /**
      * @return string
      */
@@ -53,6 +60,30 @@ interface GeoObjectInterface
      * @return array
      */
     public function getPoint();
+
+
+    /**
+     * @return string
+     */
+    public function getLocality();
+
+
+    /**
+     * @return string
+     */
+    public function getProvince();
+
+
+    /**
+     * @return string
+     */
+    public function getStreet();
+
+
+    /**
+     * @return string
+     */
+    public function getAddress();
     
 
     /**

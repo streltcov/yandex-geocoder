@@ -15,6 +15,14 @@ use streltcov\geocoder\interfaces\QueryInterface;
 abstract class Response implements QueryInterface
 {
 
+    protected $kinds = [
+        'house',
+        'street',
+        'metro',
+        'district',
+        'locality'
+    ];
+
     /**
      * @var string
      */
@@ -80,7 +88,7 @@ abstract class Response implements QueryInterface
                 break;
         }
 
-        $this->init($api_response);
+        //$this->geoObjects = array_unique($this->geoObjects);
 
     } // end construct
 
@@ -147,6 +155,47 @@ abstract class Response implements QueryInterface
         }
 
         return $exact;
+
+    } // end function
+
+
+
+    abstract protected function selectCustom(array $parameters);
+
+
+    /**
+     * @param null $parameters
+     * @return $this
+     */
+    public function select($parameters = null)
+    {
+
+        $objects = $this->geoObjects;
+
+        $id = [];
+
+        if (is_array($parameters)) {
+
+            if (isset($parameters['id'])) {
+                if (is_array($parameters['id'])) {
+                    foreach ($parameters['id'] as $num) {
+                        foreach ($objects as $key => $object) {
+                            if ($num == $key) {
+                                $id[$key] = $object;
+                            }
+                        }
+                    }
+                } else {
+                    $id = [];
+                }
+            }
+        }
+
+        $this->geoObjects = $id;
+
+        $this->selectCustom();
+
+        return $this;
 
     } // end function
 

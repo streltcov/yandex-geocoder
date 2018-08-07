@@ -24,6 +24,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Class GeoData
+ *
  * Contains Yandex geocoder response data
  *
  * @package streltcov\yandex-geocoder
@@ -31,76 +32,37 @@ use streltcov\geocoder\interfaces\QueryInterface;
 class GeoData extends Response implements QueryInterface
 {
 
-    private $geocoderMetaData;
-    private $metaDataProperty;
-    protected $featureMember;
-    protected $geoObjects = [];
-
     protected $error = false;
 
-    /**
-    public function __construct(string $address)
-    {
-
-        $address = $this->filterAddress($address);
-
-        // getting response object (stdClass)
-        $response = json_decode(Api::request($address));
-        $response = (object)$response->response->GeoObjectCollection;
-        $this->init($response);
-
-    } // end construct
-
-    */
-
 
     /**
-     * @param \stdClass $response
+     * @param $parameters
      */
-    /*protected function init(\stdClass $response)
+    protected function selectCustom(array $parameters = null)
     {
 
-        // checking found results - if 0 - error flag is set up
-        /*$found = (int)$this->geocoderMetaData->found;
-        $found != 0 ? $this->error = true : $this->error = false;
-
-        switch ($this->error) {
-
-        }
-
-        if ($this->error != false) {
-            foreach ($this->featureMember as $geoobject) {
-                $this->geoObjects[] = new GeoObject($geoobject);
+        /*if (isset($parameters['kind'])) {
+            foreach ($this->geoObjects as $item) {
+                if ($item->kind == $parameters['kind']) {
+                    $kinds[] = $item;
+                }
             }
-        } else {
-            $this->geoObjects[] = new ErrorObject();
         }*/
 
-    //} // end function
-
-
-    /**
-     * @param \stdClass $response
-     */
-    protected function initError(\stdClass $response)
-    {
-
-        $this->geoObjects[] = new ErrorObject();
-
-    }
+    } // end function
 
 
     /**
      * @param string $address
      * @return string
      */
-    private function filterAddress($address)
+    /*private function filterAddress($address)
     {
 
         $address = explode(' ', $address);
         return trim(implode("+", $address));
 
-    } // end function
+    }*/ // end function
 
 
 
@@ -108,17 +70,6 @@ class GeoData extends Response implements QueryInterface
      * QueryInterface implementation
      */
 
-
-    /**
-     * @param null $parameters
-     * @return $this
-     */
-    public function select($parameters = null)
-    {
-
-        return $this;
-
-    } // end function
 
 
     public function exact()
@@ -139,7 +90,7 @@ class GeoData extends Response implements QueryInterface
     {
 
         if ($parameters == null) {
-            return $this->geoObjects[0];
+            return array_shift($this->geoObjects);
         }
 
     } // end function

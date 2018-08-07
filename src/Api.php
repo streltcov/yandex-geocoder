@@ -27,7 +27,6 @@ use phpDocumentor\Reflection\Types\Static_;
 class Api
 {
 
-    private static $response;
     private static $responsecode;
 
     private static $lang = [
@@ -84,6 +83,7 @@ class Api
     } // end function
 
 
+
     /**
      *
      * @param string $coordinates
@@ -94,6 +94,11 @@ class Api
     {
 
         $response = '';
+
+        if (!in_array($kind, static::$kind)) {
+            $kind = null;
+        }
+
         $link = static::setLink($coordinates, $kind);
 
         $connection = curl_init();
@@ -115,7 +120,7 @@ class Api
      * (values listed in static::$lang array)
      *
      * @param string $locale
-     * @return void
+     * @return boolean
      */
     public static function setLocale($locale)
     {
@@ -128,6 +133,7 @@ class Api
         return false;
 
     } // end function
+
 
 
     /**
@@ -157,6 +163,8 @@ class Api
         return $link . $lang . $kind . $skip;
 
     } // end function
+
+
 
 
     /**

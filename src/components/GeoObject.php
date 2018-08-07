@@ -30,10 +30,6 @@ class GeoObject implements GeoObjectInterface
 {
 
     /**
-     * @var \stdClass
-     */
-    protected $metadata;
-    /**
      * @var string
      */
     protected $description;
@@ -44,19 +40,15 @@ class GeoObject implements GeoObjectInterface
     /**
      * @var string
      */
+    protected $address;
+    /**
+     * @var string
+     */
     protected $coordinates;
     /**
      * @var string
      */
     protected $precision;
-    /**
-     * @var \stdClass
-     */
-    protected $address;
-    /**
-     * @var \stdClass
-     */
-    protected $addressdetails;
     /**
      * @var string
      */
@@ -91,30 +83,26 @@ class GeoObject implements GeoObjectInterface
         $this->name = $response->name;
         $this->description = $response->description;
         $this->coordinates = $response->Point->pos;
-        $this->envelope = $response->boundedBy->Envelope;
-        $this->metadata = $response->metaDataProperty->GeocoderMetaData;
-        $this->init();
+        $this->envelope = (array)$response->boundedBy->Envelope;
+        $metadata = $response->metaDataProperty->GeocoderMetaData;
 
-        unset($response);
+        $this->init($metadata);
 
     } // end construct
 
 
 
     /**
-     *
+     * @param $metadata
      */
-    protected function init()
+    protected function init(\stdClass $metadata)
     {
 
-        $this->precision = $this->metadata->precision;
-        $this->kind = $this->metadata->kind;
-        $this->address = (object)$this->metadata->Address;
-        $this->addressdetails = (object)$this->metadata->AddressDetails->Country;
+        $this->precision = $metadata->precision;
+        $this->kind = $metadata->kind;
+        $this->address = $metadata->Address->formatted;
 
-        //var_dump($this->metadata->Address);
-
-        $components = $this->metadata->Address->Components;
+        $components = $metadata->Address->Components;
 
         foreach ($components as $item) {
             if ($item->kind == 'province' && $this->province == null) {
@@ -207,10 +195,10 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getFormattedAddress()
+    public function getAddress()
     {
 
-        return (string)$this->address->formatted;
+        return (string)$this->address;
 
     } // end function
 
@@ -253,6 +241,42 @@ class GeoObject implements GeoObjectInterface
         return $this->addressdetails->CountryNameCode;
 
     } // end function
+
+
+
+    /**
+     *
+     */
+    public function getProvince()
+    {
+
+        return $this->province;
+
+    } // end function
+
+
+
+    /**
+     *
+     */
+    public function getLocality()
+    {
+
+        return $this->locality;
+
+    } // end function
+
+
+    /**
+     *
+     */
+    public function getStreet()
+    {
+
+        return $this->street;
+
+    } // end function
+
 
 
     /**
