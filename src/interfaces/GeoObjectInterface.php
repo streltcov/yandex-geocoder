@@ -78,12 +78,6 @@ interface GeoObjectInterface
      * @return string
      */
     public function getStreet();
-
-
-    /**
-     * @return string
-     */
-    public function getAddress();
     
 
     /**

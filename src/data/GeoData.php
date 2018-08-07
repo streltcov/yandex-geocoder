@@ -70,37 +70,4 @@ class GeoData extends Response implements QueryInterface
      * QueryInterface implementation
      */
 
-
-
-    public function exact()
-    {
-
-        foreach ($this->geoObjects as $geoObject) {
-            if ($geoObject->isExact()) {
-                return $geoObject;
-            }
-        }
-
-        return false;
-
-    } // end function
-
-
-    public function one($parameters = null)
-    {
-
-        if ($parameters == null) {
-            return array_shift($this->geoObjects);
-        }
-
-    } // end function
-
-
-    public function all()
-    {
-
-        return $this->geoObjects;
-
-    } // end function
-
 } // end class

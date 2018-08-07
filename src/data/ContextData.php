@@ -29,8 +29,8 @@ use streltcov\geocoder\interfaces\QueryInterface;
 class ContextData extends Response implements QueryInterface, ContextInterface
 {
 
-    private $metaData;
-    private $featureMember;
+    protected $metaData;
+    protected $featureMember;
 
     /**
      * Context constructor

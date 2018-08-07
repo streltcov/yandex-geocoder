@@ -65,14 +65,15 @@ abstract class Response implements QueryInterface
 
     /**
      * Response constructor
+     *
      * @param $query
      */
     final public function __construct($query)
     {
 
         $api_response = (object)json_decode(Api::request($query))
-        ->response
-        ->GeoObjectCollection;
+                ->response
+                ->GeoObjectCollection;
 
         $this->metaData = $api_response->metaDataProperty->GeocoderResponseMetaData;
         $this->results = (int)$this->metaData->results;
@@ -87,8 +88,6 @@ abstract class Response implements QueryInterface
                 $this->initError($api_response);
                 break;
         }
-
-        //$this->geoObjects = array_unique($this->geoObjects);
 
     } // end construct
 
@@ -186,8 +185,12 @@ abstract class Response implements QueryInterface
                         }
                     }
                 } else {
-                    $id = [];
+                    if (isset($objects[$id])) {
+                        $id = $objects[$id];
+                    }
                 }
+            } else {
+                $id = $objects;
             }
         }
 
@@ -196,6 +199,37 @@ abstract class Response implements QueryInterface
         $this->selectCustom();
 
         return $this;
+
+    } // end function
+
+    public function exact()
+    {
+
+        foreach ($this->geoObjects as $geoObject) {
+            if ($geoObject->isExact()) {
+                return $geoObject;
+            }
+        }
+
+        return false;
+
+    } // end function
+
+
+    public function one($parameters = null)
+    {
+
+        if ($parameters == null) {
+            return array_shift($this->geoObjects);
+        }
+
+    } // end function
+
+
+    public function all()
+    {
+
+        return $this->geoObjects;
 
     } // end function
 
