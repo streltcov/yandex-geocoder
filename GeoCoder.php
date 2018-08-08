@@ -74,4 +74,35 @@ class GeoCoder
 
     } // end function
 
+
+
+    /**
+     * sets global 'kind' parameter
+     * will be applied to all context queries
+     * (direct geocoder requests (with address parameter) does not support this parameter)
+     *
+     * @see Api::$kinds - available values for $kind argument
+     * @param string $kind
+     */
+    public static function kind(string $kind)
+    {
+
+        Api::setKindGlobal($kind);
+
+    } // end function
+
+
+    /**
+     * sets global 'skip' parameter
+     * will be applied to all queries
+     *
+     * @param int $skip
+     */
+    public static function skip(int $skip)
+    {
+
+        Api::setSkipGlobal($skip);
+
+    } // end function
+
 } // end class

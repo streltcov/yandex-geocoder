@@ -226,16 +226,22 @@ abstract class Response implements QueryInterface
             }
         }
 
-        return false;
+        return new ErrorObject();
 
     } // end function
 
 
-    public function one($parameters = null)
+    public function one($number = null)
     {
 
-        if ($parameters == null) {
+        if ($number == null) {
             return array_shift($this->geoObjects);
+        } else {
+            if (array_key_exists($this->geoObjects[$number])) {
+                return $this->geoObjects[$number];
+            } else {
+                return array_shift($this->geoObjects);
+            }
         }
 
     } // end function

@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder;
 
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Static_;
 
 /**
@@ -53,17 +54,13 @@ class Api
     ];
 
     private static $api_url = 'https://geocode-maps.yandex.ru/1.x/?geocode=';
-    private static $curl_options = [
-        CURLOPT_HTTPGET => 1,
-        CURLOPT_RETURNTRANSFER => 1
-    ];
 
 
     /**
      * performs request to Yandex GeoCoder with set up parameters
      *
      * @param $address
-     * @return mixed|string
+     * @return string
      */
     public static function request($address)
     {
@@ -86,11 +83,12 @@ class Api
 
     /**
      *
+     * @param integer $skip
      * @param string $coordinates
      * @param string $kind
-     * @return mixed|string
+     * @return string
      */
-    public static function requestContext($coordinates, $kind = null)
+    public static function requestContext($coordinates, $kind = null, $skip = null)
     {
 
         $response = '';
@@ -99,7 +97,7 @@ class Api
             $kind = null;
         }
 
-        $link = static::setLink($coordinates, $kind);
+        $link = static::setLink($coordinates, $kind, $skip);
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_URL, $link);
@@ -109,6 +107,57 @@ class Api
         curl_close($connection);
 
         return $response;
+
+    } // end function
+
+
+
+    /**
+     * creates query link from request string and current API parameters
+     *
+     * @param integer $skip
+     * @param string $kind
+     * @param string $base
+     * @return string
+     */
+    private static function setLink($base, $kind = null, $skip = null)
+    {
+
+        $link = static::$api_url . $base . '&format=json';
+        $kind != null ? $kind = $kind : $kind = '';
+
+        if (static::$parameters['lang'] != null) {
+            $lang = '&lang=' . static::$parameters['lang'];
+        } else {
+            $lang = '';
+        }
+
+        if (is_integer($skip)) {
+            $skip = '&skip=' . $skip;
+        } else {
+            $skip = '';
+        }
+
+        if (static::$parameters['kind'] != null && in_array(static::$parameters['kind'], static::$kinds)) {
+            $kind = static::$parameters['kind'];
+        }
+
+        return $link . $lang . $kind . $skip;
+
+    } // end function
+
+
+
+
+    /**
+     * gets current response code for current request
+     *
+     * @return string
+     */
+    private static function getResponseCode()
+    {
+
+        return static::$responsecode;
 
     } // end function
 
@@ -135,47 +184,30 @@ class Api
     } // end function
 
 
-
     /**
-     * creates query link from request string and current API parameters
+     * sets global kind parameter
      *
-     * @param string $kind
-     * @param string $base
-     * @return string
+     * @param $kind
      */
-    private static function setLink($base, $kind = null)
+    public static function setKindGlobal($kind)
     {
 
-        $link = static::$api_url . $base . '&format=json';
-        $kind != null ? $kind = $kind : $kind = '';
-        $skip = '';
-
-        if (static::$parameters['lang'] != null) {
-            $lang = '&lang=' . static::$parameters['lang'];
-        } else {
-            $lang = '';
+        if (in_array($kind, static::$kind)) {
+            static::$parameters['kind'] = $kind;
         }
-
-        if (static::$parameters['kind'] != null && in_array(static::$parameters['kind'], static::$kinds)) {
-            $kind = static::$parameters['kind'];
-        }
-
-        return $link . $lang . $kind . $skip;
 
     } // end function
 
 
-
-
     /**
-     * gets current response code for current request
+     * sets global skip parameter
      *
-     * @return string
+     * @param $skip
      */
-    private static function getResponseCode()
+    public static function setSkipGlobal(int $skip)
     {
 
-        return static::$responsecode;
+        static::$parameters['skip'] = (int)$skip;
 
     } // end function
 
