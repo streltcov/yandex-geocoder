@@ -178,15 +178,16 @@ abstract class Response implements QueryInterface
 
 
     /**
-     * @param null $parameters
+     * @param array $parameters
      * @return $this
      */
-    public function select($parameters = null)
+    public function select(array $parameters = null)
     {
 
         $objects = $this->geoObjects;
-
+        $this->geoObjects = [];
         $id = [];
+        $kinds = [];
 
         if (is_array($parameters)) {
 
@@ -200,16 +201,32 @@ abstract class Response implements QueryInterface
                         }
                     }
                 } else {
-                    if (isset($objects[$id])) {
-                        $id = $objects[$id];
+                    if (isset($objects[$parameters['id']])) {
+                        $id[$parameters['id']] = $objects[$parameters['id']];
                     }
                 }
             } else {
                 $id = $objects;
             }
+
+            if (isset($parameters['kind'])) {
+                if (is_array($parameters['kind'])) {
+                    foreach ($parameters['kind'] as $kind) {
+                        foreach ($id as $key => $object) {
+                            if ($object->getKind() == $kind) {
+                                $kinds[$key] = $object;
+                            }
+                        }
+                    }
+                }
+            } else {
+
+            }
         }
 
-        $this->geoObjects = $id;
+        //var_dump($kinds);
+
+        $this->geoObjects = $kinds;
 
         $this->selectCustom();
 
@@ -217,6 +234,57 @@ abstract class Response implements QueryInterface
 
     } // end function
 
+
+
+    public function except(array $parameters = null)
+    {
+
+        $objects = $this->geoObjects;
+
+        if (is_array($parameters)) {
+
+            if (isset($parameters['id'])) {
+                if (is_array($parameters['id'])) {
+                    foreach ($parameters['id'] as $num) {
+                        foreach ($objects as $key => $object) {
+                            if ($num == $key) {
+                                unset($objects[$key]);
+                            }
+                        }
+                    }
+                } else {
+                    if (isset($objects[$parameters['id']])) {
+                        $id = $objects[$parameters['id']];
+                    }
+                }
+            } else {
+                $id = $objects;
+            }
+
+            if (isset($parameters['kind'])) {
+
+            } else {
+
+            }
+        }
+
+
+        $this->geoObjects = $objects;
+        //var_dump($this->geoObjects);
+
+        $this->selectCustom();
+
+        return $this;
+
+    } // end function
+
+
+
+    /**
+     * finds in geoobjects array item with property 'precision' set to 'exact'
+     *
+     * @return GeoObject|ErrorObject
+     */
     public function exact()
     {
 

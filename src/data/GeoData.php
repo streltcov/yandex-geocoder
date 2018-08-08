@@ -41,14 +41,6 @@ class GeoData extends Response implements QueryInterface
     protected function selectCustom(array $parameters = null)
     {
 
-        /*if (isset($parameters['kind'])) {
-            foreach ($this->geoObjects as $item) {
-                if ($item->kind == $parameters['kind']) {
-                    $kinds[] = $item;
-                }
-            }
-        }*/
-
     } // end function
 
 

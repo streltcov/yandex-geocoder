@@ -26,28 +26,8 @@ use streltcov\geocoder\interfaces\QueryInterface;
  *
  * @package streltcov\geocoder
  */
-class ContextData extends Response implements QueryInterface, ContextInterface
+class ContextData extends Response implements QueryInterface
 {
-
-    protected $metaData;
-    protected $featureMember;
-
-    /**
-     * Context constructor
-     *
-     * @param string $coordinates
-     * @param string|null $kind
-     */
-    /*public function __construct($coordinates, $kind = null)
-    {
-
-        $response = json_decode(Api::requestContext($coordinates, $kind))->response->GeoObjectCollection;
-        //var_dump($response);
-        $this->metaData = $response->metaDataProperty;
-        $this->featureMember = $response->featureMember;
-        //var_dump($this->featureMember);
-
-    }*/ // end construct
 
 
     protected function selectCustom(array $parameters)
@@ -55,62 +35,9 @@ class ContextData extends Response implements QueryInterface, ContextInterface
         // TODO: Implement selectCustom() method.
     }
 
-
-    /**
-     * QueryInterface
-     */
-
-    public function hasExact()
-    {
-        // TODO: Implement isExact() method.
-    }
-
-    public function exact()
-    {
-        // TODO: Implement exact() method.
-    }
-
-
     public function select()
     {
         // TODO: Implement select() method.
     }
-
-
-    public function one()
-    {
-
-        return $this->geoObjects[0];
-
-    }
-
-    public function all()
-    {
-
-        return $this->geoObjects;
-
-    }
-
-    /**
-     * END INTERFACE
-     */
-
-    /**
-     * ContextInterface
-     */
-
-    public function skip()
-    {
-        // TODO: Implement skip() method.
-    }
-
-    public function kind()
-    {
-        // TODO: Implement kind() method.
-    }
-
-    /**
-     * END INTERFACE
-     */
 
 } // end class
