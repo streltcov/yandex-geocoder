@@ -56,11 +56,27 @@ class GeoObject implements GeoObjectInterface
     /**
      * @var string
      */
+    protected $country;
+    /**
+     * @var string
+     */
+    protected $postalcode;
+    /**
+     * @var string
+     */
+    protected $countrycode;
+    /**
+     * @var string
+     */
     protected $street = null;
     /**
      * @var string
      */
-    protected $locality;
+    protected $area;
+    /**
+     * @var string
+     */
+    protected $locality = null;
     /**
      * @var string
      */
@@ -93,6 +109,8 @@ class GeoObject implements GeoObjectInterface
 
 
     /**
+     * sets up object properties from metaData of /stdClass response object
+     *
      * @param $metadata
      */
     protected function init(\stdClass $metadata)
@@ -102,7 +120,37 @@ class GeoObject implements GeoObjectInterface
         $this->kind = $metadata->kind;
         $this->address = $metadata->Address->formatted;
 
-        $components = $metadata->Address->Components;
+        if (isset($metadata->Address->postal_code)) {
+            $this->postalcode = $metadata->Address->postal_code;
+        } else {
+            $this->postalcode = 'N/A';
+        }
+
+        $this->parseComponents($metadata->Address->Components);
+        $this->parseAddressDetails($metadata->AddressDetails);
+        
+    } // end function
+
+
+    /**
+     * @param \stdClass $details
+     */
+    protected function parseAddressDetails(\stdClass $details)
+    {
+
+        $country = $details->Country;
+        $this->country = $country->CountryName;
+        $this->countrycode = $country->CountryNameCode;
+        $this->area = $country->AdministrativeArea->AdministrativeAreaName;
+
+    } // end function
+
+
+    /**
+     * @param $components
+     */
+    protected function parseComponents($components)
+    {
 
         foreach ($components as $item) {
             if ($item->kind == 'province' && $this->province == null) {
@@ -113,7 +161,7 @@ class GeoObject implements GeoObjectInterface
                 $this->locality = $item->name;
             }
         }
-        
+
     } // end function
 
 
@@ -164,11 +212,6 @@ class GeoObject implements GeoObjectInterface
     } // end function
 
 
-    public function getHeader()
-    {
-        // TODO: Implement getHeader() method
-    }
-
 
     /**
      * @return mixed
@@ -217,7 +260,9 @@ class GeoObject implements GeoObjectInterface
 
     public function getPostalcode()
     {
-        // TODO: Implement getPostalcode() method.
+
+        return $this->postalcode;
+
     }
 
 
@@ -227,7 +272,7 @@ class GeoObject implements GeoObjectInterface
     public function getCountry()
     {
 
-        return $this->addressdetails->CountryName;
+        return $this->country;
 
     } // end function
 
@@ -238,7 +283,7 @@ class GeoObject implements GeoObjectInterface
     public function getCountryCode()
     {
 
-        return $this->addressdetails->CountryNameCode;
+        return $this->countrycode;
 
     } // end function
 
@@ -290,6 +335,29 @@ class GeoObject implements GeoObjectInterface
         return $point;
 
     } // end function
+
+
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        $data['name'] = $this->getName();
+        $data['description'] = $this->getDescription();
+        $data['coordinates'] = $this->getCoordinates();
+        $data['kind'] = $this->getKind();
+        $data['country'] = $this->getCountry();
+        $data['postalcode'] = $this->getPostalcode();
+        $data['locality'] = $this->getLocality();
+        $data['address'] = $this->getAddress();
+        $data['street'] = $this->getStreet();
+
+        return $data;
+
+    } // end function
+
+
 
     /**
      * END GETTERS

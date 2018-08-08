@@ -29,15 +29,13 @@ use streltcov\geocoder\interfaces\QueryInterface;
 class ContextData extends Response implements QueryInterface
 {
 
+    private $kinds_custom = [
+
+    ];
 
     protected function selectCustom(array $parameters)
     {
         // TODO: Implement selectCustom() method.
-    }
-
-    public function select()
-    {
-        // TODO: Implement select() method.
     }
 
 } // end class

@@ -35,6 +35,12 @@ class GeoData extends Response implements QueryInterface
     protected $error = false;
 
 
+    protected function request()
+    {
+
+    } // end function
+
+
     /**
      * @param $parameters
      */

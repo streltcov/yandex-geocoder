@@ -236,50 +236,6 @@ abstract class Response implements QueryInterface
 
 
 
-    public function except(array $parameters = null)
-    {
-
-        $objects = $this->geoObjects;
-
-        if (is_array($parameters)) {
-
-            if (isset($parameters['id'])) {
-                if (is_array($parameters['id'])) {
-                    foreach ($parameters['id'] as $num) {
-                        foreach ($objects as $key => $object) {
-                            if ($num == $key) {
-                                unset($objects[$key]);
-                            }
-                        }
-                    }
-                } else {
-                    if (isset($objects[$parameters['id']])) {
-                        $id = $objects[$parameters['id']];
-                    }
-                }
-            } else {
-                $id = $objects;
-            }
-
-            if (isset($parameters['kind'])) {
-
-            } else {
-
-            }
-        }
-
-
-        $this->geoObjects = $objects;
-        //var_dump($this->geoObjects);
-
-        $this->selectCustom();
-
-        return $this;
-
-    } // end function
-
-
-
     /**
      * finds in geoobjects array item with property 'precision' set to 'exact'
      *
@@ -305,7 +261,7 @@ abstract class Response implements QueryInterface
         if ($number == null) {
             return array_shift($this->geoObjects);
         } else {
-            if (array_key_exists($this->geoObjects[$number])) {
+            if (array_key_exists($number, $this->geoObjects)) {
                 return $this->geoObjects[$number];
             } else {
                 return array_shift($this->geoObjects);
