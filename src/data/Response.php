@@ -38,6 +38,12 @@ abstract class Response implements QueryInterface
         'locality'
     ];
 
+    protected $find = [
+        'locality',
+        'country',
+        'description'
+    ];
+
     /**
      * @var string
      */
@@ -224,11 +230,41 @@ abstract class Response implements QueryInterface
             }
         }
 
-        //var_dump($kinds);
-
         $this->geoObjects = $kinds;
 
         $this->selectCustom();
+
+        return $this;
+
+    } // end function
+
+
+
+    /**
+     *
+     *
+     * @param string $query
+     * @return array
+     */
+    public function find($query)
+    {
+
+        $query = strtolower((string)$query);
+        $search = [];
+
+        $seek = function() {
+        };
+
+        foreach ($this->geoObjects as $object) {
+            $data = $object->getData();
+            $data = implode(' ', $data);
+            if (strpos($data, $query)) {
+                $search[] = $object;
+            }
+        } // endfor
+
+        //return $search;
+        $this->geoObjects = $search;
 
         return $this;
 
