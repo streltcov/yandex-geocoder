@@ -2,9 +2,7 @@
 
 namespace streltcov\geocoder\data;
 
-use streltcov\geocoder\data\Response;
-use streltcov\geocoder\errors\ErrorObject;
-use streltcov\geocoder\components\GeoObject;
+use streltcov\geocoder\Api;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -24,7 +22,6 @@ use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Class GeoData
- *
  * Contains Yandex geocoder response data
  *
  * @package streltcov\yandex-geocoder
@@ -32,11 +29,20 @@ use streltcov\geocoder\interfaces\QueryInterface;
 class GeoData extends Response implements QueryInterface
 {
 
-    protected $error = false;
-
-
-    protected function request()
+    /**
+     * performs request to geocoder
+     *
+     * @param string $query
+     * @param string $kind
+     * @param integer $skip
+     * @return \stdClass
+     */
+    protected function request($query, $kind = null, $skip = null)
     {
+
+        return (object)json_decode(Api::request($query))
+            ->response
+            ->GeoObjectCollection;
 
     } // end function
 
@@ -48,24 +54,5 @@ class GeoData extends Response implements QueryInterface
     {
 
     } // end function
-
-
-    /**
-     * @param string $address
-     * @return string
-     */
-    /*private function filterAddress($address)
-    {
-
-        $address = explode(' ', $address);
-        return trim(implode("+", $address));
-
-    }*/ // end function
-
-
-
-    /**
-     * QueryInterface implementation
-     */
 
 } // end class

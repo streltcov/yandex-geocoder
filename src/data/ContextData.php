@@ -3,7 +3,6 @@
 namespace streltcov\geocoder\data;
 
 use streltcov\geocoder\Api;
-use streltcov\geocoder\interfaces\ContextInterface;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -22,7 +21,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 
 /**
- * Class Context
+ * Class ContextData
  *
  * @package streltcov\geocoder
  */
@@ -33,6 +32,27 @@ class ContextData extends Response implements QueryInterface
 
     ];
 
+
+    /**
+     * performs request to geocoder
+     *
+     * @param string $query
+     * @return \stdClass
+     */
+    protected function request($query, $kind = null, $skip = null)
+    {
+
+        return (object)json_decode(Api::requestContext($query))
+            ->response
+            ->GeoObjectCollection;
+
+    } // end function
+
+
+
+    /**
+     * @param array $parameters
+     */
     protected function selectCustom(array $parameters)
     {
         // TODO: Implement selectCustom() method.

@@ -25,28 +25,41 @@ $autoload = '../vendor/autoload.php';
 require_once $autoload;
 
 /**
+ * @param string $coordinates
+ */
+$requestcontext = function ($coordinates) {
+
+};
+
+/**
  * @param string $address
  */
-$requestaddress = function ($address) {
+$request = function ($address) use ($requestcontext) {
     system('clear');
-    $coder = GeoCoder::search($address);
-
-    $getexact = function ()
-    {
-
-    };
+    $data = GeoCoder::search($address);
 
     $command = 0;
     while ($command != 7) {
         echo "Data requested" . PHP_EOL;
         echo PHP_EOL;
-        echo "1 - get exact value" . PHP_EOL;
+        echo "Results found: " . $data->found() . PHP_EOL;
+        echo "Current position selected" . PHP_EOL;
+        echo PHP_EOL;
+        echo "1 - check exact" . PHP_EOL;
+        echo "2 - select exact position" . PHP_EOL;
+        echo "3 - select position by number (from 1 to number of results found)" . PHP_EOL;
         echo "7 - go back". PHP_EOL;
+        echo PHP_EOL . PHP_EOL;
+        echo "Select option: ";
         $command = trim(fgets(STDIN));
         switch ($command) {
             case '1':
                 echo PHP_EOL;
-                echo "exact value - " . $coder->getExact()->name;
+                if ($data->hasExact()) {
+                    echo "exact position";
+                } else {
+                    echo "Exact position has not been found" . PHP_EOL;
+                }
                 break;
             case '7':
                 system('clear');
@@ -55,40 +68,37 @@ $requestaddress = function ($address) {
         }
     }
 
-};
+}; // end function
 
 
 /**
- * @param string $coordinates
+ * main
  */
-$requestcontext = function ($coordinates) {
-
-};
-
 while (true) {
 
     echo PHP_EOL;
-    echo "1 - request address data" . PHP_EOL;
-    echo "2 - request context data (coordinates)" . PHP_EOL;
+    echo "1 - search geo data (address)" . PHP_EOL;
+    echo "2 - search geo context data (coordinates)" . PHP_EOL;
     echo "3 - exit" . PHP_EOL;
-    echo "(default - 1): ";
+    echo "(default - 3): ";
     $answer = trim(fgets(STDIN));
 
     switch ($answer) {
         case '1':
             echo "Type address to request data:";
             $address = trim(fgets(STDIN));
-            $requestaddress($address);
+            $request($address);
             break;
         case '2':
             echo "Type coordinates to request context data:";
             $coordinates = trim(fgets(STDIN));
             $requestcontext($coordinates);
             break;
-        case'3':
-            system('clear');
+        case '3':
             exit();
+            break;
         default:
+            exit();
             break;
     }
 

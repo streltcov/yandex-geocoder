@@ -4,6 +4,7 @@ namespace streltcov\geocoder\components;
 
 use streltcov\geocoder\data\ContextData;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
+use streltcov\geocoder\data\Response;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -97,7 +98,9 @@ class GeoObject implements GeoObjectInterface
 
         $response = $geoobject->GeoObject;
         $this->name = $response->name;
-        $this->description = $response->description;
+        if (isset($response->description)) {
+            $this->description = $response->description;
+        }
         $this->coordinates = $response->Point->pos;
         $this->envelope = (array)$response->boundedBy->Envelope;
         $metadata = $response->metaDataProperty->GeocoderMetaData;
@@ -141,7 +144,9 @@ class GeoObject implements GeoObjectInterface
         $country = $details->Country;
         $this->country = $country->CountryName;
         $this->countrycode = $country->CountryNameCode;
-        $this->area = $country->AdministrativeArea->AdministrativeAreaName;
+        if (isset($country->AdministrativeArea)) {
+            $this->area = $country->AdministrativeArea->AdministrativeAreaName;
+        }
 
     } // end function
 
@@ -191,7 +196,7 @@ class GeoObject implements GeoObjectInterface
     {
 
         $coordinates = $this->getCoordinates();
-        return new ContextData($coordinates, $kind);
+        return Response::create('ContextData', $coordinates);
 
     } // end function
 
