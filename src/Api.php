@@ -207,7 +207,9 @@ class Api
     public static function setSkipGlobal(int $skip)
     {
 
-        static::$parameters['skip'] = (int)$skip;
+        if ((int)$skip > 0) {
+            static::$parameters['skip'] = (int)$skip;
+        }
 
     } // end function
 

@@ -2,10 +2,10 @@ in progress
 
 ### Usage
 
-Works closely similar to database query builders
+Implements fluent interface and works closely similar to database query builders
 
 Normally Yandex-Geocoder returns several (up to 10) results with
- different precision (for example, "exact" or "number" or "street" etc.)
+ different precision (for example, "exact", "number" or "street" etc.)
 
 
     <?php
@@ -37,18 +37,18 @@ Normally Yandex-Geocoder returns several (up to 10) results with
 
 | Static method          | Parameter     | Description |
 | --------------- |:-------------:| -----:|
-| search($address)| [string] $address | returns GeoData object|
-| searchContext($coordinates) | [string] $coordinates | returns ContextObject |
+| search($address)| [string] $address | returns GeoCollection|
+| searchContext($coordinates) | [string] $coordinates | searching geocontext via coordinates; returns GeoCollection|
 | setLocality()  | [string] $locality | sets global parameter 'locality' |
 
 
 
-#### Response object (GeoData or ContextData):
+#### GeoCollection:
 
-| Method          | Parameter     |   |
+| Method          | Parameter     | Description |
 | --------------- |:-------------:| -----:|
-| exact() | null | |
-| one() | [integer] | |
-| all() | null | |
-| select($parameters) | [array] | |
-| except($parameters) | [array] | |
+| exact() | null | returns GeoObject with "exact" precision (if exists in collection); else returns null|
+| one() | [integer] | returns GeoObject with requested id (index in array); returns first instance with null parameter|
+| all() | null | returns array of GeoObjects |
+| select($parameters) | [array] | filters geoobjects by kind and/or id (index in array)|
+| find($query) | [string] | filters geoobjects using |

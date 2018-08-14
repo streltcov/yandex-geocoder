@@ -127,7 +127,7 @@ class GeoObject implements GeoObjectInterface
         if (isset($metadata->Address->postal_code)) {
             $this->postalcode = $metadata->Address->postal_code;
         } else {
-            $this->postalcode = 'N/A';
+            $this->postalcode = null;
         }
 
         $this->parseComponents($metadata->Address->Components);
@@ -142,9 +142,14 @@ class GeoObject implements GeoObjectInterface
     protected function parseAddressDetails(\stdClass $details)
     {
 
-        $country = $details->Country;
-        $this->country = $country->CountryName;
-        $this->countrycode = $country->CountryNameCode;
+        if (isset($details->Country)) {
+            $country = $details->Country;
+            $this->country = $country->CountryName;
+            $this->countrycode = $country->CountryNameCode;
+        } else {
+            $this->country = null;
+            $this->countrycode = null;
+        }
         if (isset($country->AdministrativeArea)) {
             $this->area = $country->AdministrativeArea->AdministrativeAreaName;
         }
