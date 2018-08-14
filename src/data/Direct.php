@@ -22,11 +22,12 @@ use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Class GeoData
- * Contains Yandex geocoder response data
+ * Contains Yandex geocoder response data for direct request (address)
  *
+ * @see GeoCollection
  * @package streltcov\yandex-geocoder
  */
-class GeoData extends Response implements QueryInterface
+class Direct extends GeoCollection implements QueryInterface
 {
 
     /**
@@ -43,15 +44,6 @@ class GeoData extends Response implements QueryInterface
         return (object)json_decode(Api::request($query))
             ->response
             ->GeoObjectCollection;
-
-    } // end function
-
-
-    /**
-     * @param $parameters
-     */
-    protected function selectCustom(array $parameters = null)
-    {
 
     } // end function
 

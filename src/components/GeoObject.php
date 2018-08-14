@@ -3,6 +3,7 @@
 namespace streltcov\geocoder\components;
 
 use streltcov\geocoder\data\ContextData;
+use streltcov\geocoder\data\GeoCollection;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
 use streltcov\geocoder\data\Response;
 
@@ -196,7 +197,7 @@ class GeoObject implements GeoObjectInterface
     {
 
         $coordinates = $this->getCoordinates();
-        return Response::create('ContextData', $coordinates);
+        return GeoCollection::createCollection('Context', $coordinates);
 
     } // end function
 

@@ -3,9 +3,9 @@
 namespace streltcov\YandexGeocoder;
 
 use streltcov\geocoder\Api;
-use streltcov\geocoder\data\Response;
-use streltcov\geocoder\data\GeoData;
-use streltcov\geocoder\data\ContextData;
+use streltcov\geocoder\data\GeoCollection;
+use streltcov\geocoder\data\Direct;
+use streltcov\geocoder\data\Context;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -39,7 +39,7 @@ class GeoCoder
     public static function search($address)
     {
 
-        return Response::create('GeoData', $address);
+        return GeoCollection::createCollection('Direct', $address);
 
     } // end function
 
@@ -51,10 +51,10 @@ class GeoCoder
      * @param string $coordinates
      * @return ContextData
      */
-    public static function searchContext($coordinates, $kind = null)
+    public static function searchContext($coordinates, $kind = null, $skip)
     {
 
-        return new ContextData($coordinates, $kind);
+        return GeoCollection::createCollection($coordinates, $kind, $skip);
 
     } // end function
 

@@ -21,7 +21,7 @@ use streltcov\geocoder\GeoObject;
 
 /**
  * Interface QueryInterface
- * contains methods for geocoder query build
+ * FluentInterface for GeoCollection query building
  *
  * @package streltcov\geocoder\interfaces
  */
@@ -33,12 +33,30 @@ interface QueryInterface
      */
     public function hasExact();
 
+    /**
+     * @return mixed
+     */
     public function select();
 
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function find($query);
+
+    /**
+     * @return mixed
+     */
     public function exact();
 
+    /**
+     * @return mixed
+     */
     public function one();
 
+    /**
+     * @return mixed
+     */
     public function all();
 
 } // end interface

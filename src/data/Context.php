@@ -25,13 +25,8 @@ use streltcov\geocoder\interfaces\QueryInterface;
  *
  * @package streltcov\geocoder
  */
-class ContextData extends Response implements QueryInterface
+class Context extends GeoCollection implements QueryInterface
 {
-
-    private $kinds_custom = [
-
-    ];
-
 
     /**
      * performs request to geocoder
@@ -42,20 +37,10 @@ class ContextData extends Response implements QueryInterface
     protected function request($query, $kind = null, $skip = null)
     {
 
-        return (object)json_decode(Api::requestContext($query))
+        return (object)json_decode(Api::requestContext($query, $kind, $query))
             ->response
             ->GeoObjectCollection;
 
     } // end function
-
-
-
-    /**
-     * @param array $parameters
-     */
-    protected function selectCustom(array $parameters)
-    {
-        // TODO: Implement selectCustom() method.
-    }
 
 } // end class

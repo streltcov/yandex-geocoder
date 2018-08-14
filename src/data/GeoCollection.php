@@ -26,7 +26,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  *
  * @package streltcov\geocoder
  */
-abstract class Response implements QueryInterface
+abstract class GeoCollection implements QueryInterface
 {
 
     protected $kinds = [
@@ -138,7 +138,7 @@ abstract class Response implements QueryInterface
      * @param $query
      * @return mixed
      */
-    public static function create($class, $query)
+    public static function createCollection($class, $query, $parameters = null)
     {
 
         $class_name = 'streltcov\geocoder\data\\' . $class;
@@ -196,9 +196,6 @@ abstract class Response implements QueryInterface
 
     } // end function
 
-
-
-    abstract protected function selectCustom(array $parameters);
 
 
     /**
@@ -273,7 +270,7 @@ abstract class Response implements QueryInterface
 
 
     /**
-     *
+     * checks data in GeoObjects using substring
      *
      * @param string $query
      * @return array
