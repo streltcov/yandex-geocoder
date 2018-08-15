@@ -44,7 +44,10 @@ class Api
         'street',
         'metro',
         'district',
-        'locality'
+        'locality',
+        'province',
+        'country',
+        'hydro'
     ];
 
     private static $parameters = [
@@ -62,20 +65,13 @@ class Api
      * @param $address
      * @return string
      */
-    public static function request($address)
+    public static function direct($address)
     {
 
         $response = '';
         $link = static::setLink($address);
-
-        $connection = curl_init();
-        curl_setopt($connection, CURLOPT_URL, $link);
-        curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($connection);
-        static::$responsecode = curl_getinfo($connection, CURLINFO_HTTP_CODE);
-        curl_close($connection);
-
-        return $response;
+        echo $link . PHP_EOL;
+        return static::request($link);
 
     } // end function
 
@@ -88,16 +84,21 @@ class Api
      * @param string $kind
      * @return string
      */
-    public static function requestContext($coordinates, $kind = null, $skip = null)
+    public static function context($coordinates)
     {
 
         $response = '';
+        $link = static::setLink($coordinates, true);
+        return static::request($link);
 
-        if (!in_array($kind, static::$kind)) {
-            $kind = null;
-        }
+    } // end function
 
-        $link = static::setLink($coordinates, $kind, $skip);
+
+    /**
+     * @param $link
+     */
+    private static function request($link)
+    {
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_URL, $link);
@@ -120,27 +121,17 @@ class Api
      * @param string $base
      * @return string
      */
-    private static function setLink($base, $kind = null, $skip = null)
+    private static function setLink($base, $flag = false)
     {
-
         $link = static::$api_url . $base . '&format=json';
-        $kind != null ? $kind = $kind : $kind = '';
 
-        if (static::$parameters['lang'] != null) {
-            $lang = '&lang=' . static::$parameters['lang'];
-        } else {
-            $lang = '';
-        }
+        static::$parameters['lang'] != null ? $lang = '&lang=' . static::$parameters['lang'] : $lang = '';
 
-        if (is_integer($skip)) {
-            $skip = '&skip=' . $skip;
-        } else {
-            $skip = '';
-        }
+        isset(static::$parameters['skip']) && (int)static::$parameters['skip'] > 0 && $flag == true ?
+            $skip = '&skip=' . static::$parameters['skip'] : $skip = null;
 
-        if (static::$parameters['kind'] != null && in_array(static::$parameters['kind'], static::$kinds)) {
-            $kind = static::$parameters['kind'];
-        }
+        static::$parameters['kind'] != null && in_array(static::$parameters['kind'], static::$kind) && $flag == true ?
+            $kind = '&kind=' . static::$parameters['kind'] : $kind = null;
 
         return $link . $lang . $kind . $skip;
 
@@ -189,7 +180,7 @@ class Api
      *
      * @param $kind
      */
-    public static function setKindGlobal($kind)
+    public static function setKind($kind)
     {
 
         if (in_array($kind, static::$kind)) {
@@ -204,7 +195,7 @@ class Api
      *
      * @param $skip
      */
-    public static function setSkipGlobal(int $skip)
+    public static function setSkip(int $skip)
     {
 
         if ((int)$skip > 0) {

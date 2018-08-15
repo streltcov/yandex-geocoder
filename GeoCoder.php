@@ -3,9 +3,7 @@
 namespace streltcov\YandexGeocoder;
 
 use streltcov\geocoder\Api;
-use streltcov\geocoder\data\GeoCollection;
-use streltcov\geocoder\data\Direct;
-use streltcov\geocoder\data\Context;
+use streltcov\geocoder\collections\GeoCollection;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -51,10 +49,10 @@ class GeoCoder
      * @param string $coordinates
      * @return ContextData
      */
-    public static function searchContext($coordinates, $kind = null, $skip)
+    public static function searchContext($coordinates)
     {
 
-        return GeoCollection::createCollection($coordinates, $kind, $skip);
+        return GeoCollection::createCollection('Context', $coordinates);
 
     } // end function
 
@@ -67,7 +65,7 @@ class GeoCoder
      * @see Api
      * @param string $language
      */
-    public static function setLocale($language)
+    public static function locale($language)
     {
 
         Api::setLocale($language);
@@ -87,7 +85,7 @@ class GeoCoder
     public static function kind(string $kind)
     {
 
-        Api::setKindGlobal($kind);
+        Api::setKind($kind);
 
     } // end function
 
@@ -101,7 +99,7 @@ class GeoCoder
     public static function skip(int $skip)
     {
 
-        Api::setSkipGlobal($skip);
+        Api::setSkip($skip);
 
     } // end function
 

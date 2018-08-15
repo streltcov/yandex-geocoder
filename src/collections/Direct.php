@@ -1,6 +1,6 @@
 <?php
 
-namespace streltcov\geocoder\data;
+namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\Api;
 use streltcov\geocoder\interfaces\QueryInterface;
@@ -21,23 +21,27 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 
 /**
- * Class ContextData
+ * Class GeoData
+ * Contains Yandex geocoder response data for direct request (address)
  *
- * @package streltcov\geocoder
+ * @see GeoCollection
+ * @package streltcov\yandex-geocoder
  */
-class Context extends GeoCollection implements QueryInterface
+class Direct extends GeoCollection implements QueryInterface
 {
 
     /**
      * performs request to geocoder
      *
      * @param string $query
+     * @param string $kind
+     * @param integer $skip
      * @return \stdClass
      */
     protected function request($query, $kind = null, $skip = null)
     {
 
-        return (object)json_decode(Api::requestContext($query, $kind, $query))
+        return (object)json_decode(Api::direct($query))
             ->response
             ->GeoObjectCollection;
 

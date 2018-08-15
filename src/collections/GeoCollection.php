@@ -1,6 +1,6 @@
 <?php
 
-namespace streltcov\geocoder\data;
+namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\errors\ErrorObject;
@@ -141,7 +141,7 @@ abstract class GeoCollection implements QueryInterface
     public static function createCollection($class, $query, $parameters = null)
     {
 
-        $class_name = 'streltcov\geocoder\data\\' . $class;
+        $class_name = 'streltcov\geocoder\collections\\' . $class;
         return new $class_name($query);
 
     } // end function
