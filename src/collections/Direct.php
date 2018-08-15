@@ -41,10 +41,37 @@ class Direct extends GeoCollection implements QueryInterface
     protected function request($query, $kind = null, $skip = null)
     {
 
-        return (object)json_decode(Api::direct($query))
+        $this->beforeRequest();
+
+        $response = (object)json_decode(Api::direct($query))
             ->response
             ->GeoObjectCollection;
 
+        $this->afterRequest();
+
+        return $response;
+
     } // end function
+
+
+    protected function parseParameters($parameters)
+    {
+
+        if (isset($parameters['lang'])) {
+            return ['lang' => $parameters['lang']];
+        }
+
+    } // end function
+
+
+    protected function beforeRequest()
+    {
+        // TODO: Implement beforeRequest() method.
+    }
+
+    protected function afterRequest($parameters)
+    {
+        // TODO: Implement afterRequest() method.
+    }
 
 } // end class

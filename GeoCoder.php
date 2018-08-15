@@ -49,10 +49,10 @@ class GeoCoder
      * @param string $coordinates
      * @return ContextData
      */
-    public static function searchContext($coordinates)
+    public static function searchContext($coordinates, $parameters = null)
     {
 
-        return GeoCollection::createCollection('Context', $coordinates);
+        return GeoCollection::createCollection('Context', $coordinates, $parameters);
 
     } // end function
 

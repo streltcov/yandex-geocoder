@@ -21,7 +21,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 
 /**
- * Class ContextData
+ * Class Context
  *
  * @package streltcov\geocoder
  */
@@ -34,12 +34,70 @@ class Context extends GeoCollection implements QueryInterface
      * @param string $query
      * @return \stdClass
      */
-    protected function request($query, $kind = null, $skip = null)
+    protected function request($query, array $parameters = null)
     {
 
-        return (object)json_decode(Api::context($query, $kind, $query))
+        $current = $this->beforeRequest();
+
+        if ($parameters['kind'] != null) {
+            Api::setKind($parameters['kind']);
+        }
+
+        if ($parameters['skip'] != null) {
+            echo "skip=" . $parameters['skip'] . PHP_EOL;
+            Api::setSkip($parameters['skip']);
+        }
+
+        $response = (object)json_decode(Api::context($query))
             ->response
             ->GeoObjectCollection;
+
+        $this->afterRequest($current);
+
+        return $response;
+
+    } // end function
+
+
+    protected function parseParameters($parameters)
+    {
+
+        $result = [];
+
+        if ($parameters != null) {
+            if (isset($parameters['kind'])) {
+                $result['kind'] = $parameters['kind'];
+            }
+            if (isset($parameters['skip'])) {
+                $result['skip'] = $parameters['skip'];
+            }
+        }
+
+        var_dump($result);
+
+        return $result;
+
+    } // end function
+
+
+    /**
+     *
+     */
+    protected function beforeRequest()
+    {
+
+    } // end function
+
+
+
+    /**
+     *
+     */
+    protected function afterRequest($current)
+    {
+
+        Api::setSkip((int)$current['skip']);
+        Api::setKind((string)$current['kind']);
 
     } // end function
 

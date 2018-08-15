@@ -28,7 +28,7 @@ use phpDocumentor\Reflection\Types\Static_;
 class Api
 {
 
-    private static $responsecode;
+    public static $responsecode;
 
     private static $lang = [
         'RU' => 'ru_RU',
@@ -50,7 +50,7 @@ class Api
         'hydro'
     ];
 
-    private static $parameters = [
+    public static $parameters = [
         'kind' => null,
         'skip' => null,
         'lang' => null
@@ -70,7 +70,7 @@ class Api
 
         $response = '';
         $link = static::setLink($address);
-        echo $link . PHP_EOL;
+        //echo $link . PHP_EOL;
         return static::request($link);
 
     } // end function
@@ -89,6 +89,7 @@ class Api
 
         $response = '';
         $link = static::setLink($coordinates, true);
+        echo $link . PHP_EOL;
         return static::request($link);
 
     } // end function

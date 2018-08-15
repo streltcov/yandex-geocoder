@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder\collections;
 
+use streltcov\geocoder\Api;
 use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\interfaces\QueryInterface;
@@ -28,6 +29,13 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 abstract class GeoCollection implements QueryInterface
 {
+
+    protected $response_code;
+
+    protected $parameters = [
+        'kind' => null,
+        'skip' => null
+    ];
 
     protected $kinds = [
         'house',
@@ -82,52 +90,101 @@ abstract class GeoCollection implements QueryInterface
      *
      * @param $query
      */
-    final public function __construct($query)
+    final public function __construct($query, $parameters = null)
     {
 
-        $api_response = $this->request($query);
+        var_dump($parameters);
+        $parameters = $this->parseParameters($parameters);
 
-        $this->firstStep($api_response);
+        $api_response = $this->request($query, $parameters);
+        $this->response_code = Api::$responsecode;
 
-        $this->results == 0 ? $this->error = true : $this->error = false;
-
-        switch ($this->error) {
-            case false:
-                $this->init($api_response);
-                break;
-            case true:
-                $this->initError($api_response);
-                break;
-        }
-
-        //$this->initCustom();
+        $this->initClass($api_response);
 
     } // end construct
 
 
 
+    abstract protected function parseParameters($parameters);
+
+
+    /**
+     * @return void
+     */
+    abstract protected function beforeRequest();
+
+
+    /**
+     * @param $parameters array
+     * @return void
+     */
+    abstract protected function afterRequest($parameters);
+
+
+
     /**
      * performs request to geocoder
+     * must be overrided in child classes
      *
      * @param string $query
      * @param string $kind
      * @param integer $skip
      * @return \stdClass
      */
-    abstract protected function request($query, $kind = null, $skip = null);
+    abstract protected function request($query, array $parameters = null);
 
 
     /**
-     * sets basic object properties
+     * initialization block
+     * sets basic parameters and calls other initializing methods
      *
      * @param \stdClass $api_response
      */
-    final protected function firstStep($api_response)
+    final protected function initClass($api_response)
     {
 
         $this->metaData = $api_response->metaDataProperty->GeocoderResponseMetaData;
         $this->results = (int)$this->metaData->results;
         $this->featureMember = $api_response->featureMember;
+
+        $this->results == 0 ? $this->error = true : $this->error = false;
+        switch ($this->error) {
+            case false:
+                $this->initCollection($api_response);
+                break;
+            case true:
+                $this->initErrorColection();
+                break;
+        }
+
+    } // end function
+
+
+
+    /**
+     * inits geoobjects for each found location
+     *
+     * @param \stdClass $response
+     */
+    protected function initCollection(\stdClass $response)
+    {
+
+        foreach ($this->featureMember as $item) {
+            $this->geoObjects[] = new GeoObject($item);
+        }
+
+    } // end function
+
+
+
+    /**
+     * inits geoobject properties with error object if nothing found or query incorrect
+     *
+     */
+    protected function initErrorColection()
+    {
+
+        $this->geoObjects[] = new ErrorObject();
 
     } // end function
 
@@ -142,35 +199,7 @@ abstract class GeoCollection implements QueryInterface
     {
 
         $class_name = 'streltcov\geocoder\collections\\' . $class;
-        return new $class_name($query);
-
-    } // end function
-
-
-
-    /**
-     * inits geoobjects for each found location
-     *
-     * @param \stdClass $response
-     */
-    protected function init(\stdClass $response)
-    {
-
-        foreach ($this->featureMember as $item) {
-            $this->geoObjects[] = new GeoObject($item);
-        }
-
-    } // end function
-
-
-    /**
-     * inits geoobject properties with error object if nothing found or query incorrect
-     *
-     */
-    protected function initError()
-    {
-
-        $this->geoObjects[] = new ErrorObject();
+        return new $class_name($query, $parameters);
 
     } // end function
 
@@ -210,6 +239,10 @@ abstract class GeoCollection implements QueryInterface
 
     } // end function
 
+
+    /**
+     * Fluent Interface methods
+     */
 
 
     /**
@@ -317,6 +350,10 @@ abstract class GeoCollection implements QueryInterface
     } // end function
 
 
+    /**
+     * @param integer|null $number
+     * @return GeoObject|null
+     */
     public function one($number = null)
     {
 
@@ -333,11 +370,18 @@ abstract class GeoCollection implements QueryInterface
     } // end function
 
 
+    /**
+     * @return array|null
+     */
     public function all()
     {
 
         return $this->geoObjects;
 
     } // end function
+
+    /**
+     * End Fluent Interface
+     */
 
 } // end class
