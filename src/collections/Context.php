@@ -34,7 +34,7 @@ class Context extends GeoCollection implements QueryInterface
      * @param string $query
      * @return \stdClass
      */
-    protected function request($query, array $parameters = null)
+    protected function requestBody($query, array $parameters = null)
     {
 
         $current = $this->beforeRequest();

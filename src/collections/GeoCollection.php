@@ -93,19 +93,35 @@ abstract class GeoCollection implements QueryInterface
     final public function __construct($query, $parameters = null)
     {
 
-        var_dump($parameters);
         $parameters = $this->parseParameters($parameters);
-
         $api_response = $this->request($query, $parameters);
         $this->response_code = Api::$responsecode;
-
         $this->initClass($api_response);
 
     } // end construct
 
 
 
+
+
+    /**
+     * Abstract Methods; Define in child classes;
+     */
+
+
+    /**
+     * @param $parameters
+     * @return mixed
+     */
     abstract protected function parseParameters($parameters);
+
+
+    /**
+     * @param $query
+     * @param array|null $parameters
+     * @return mixed
+     */
+    abstract protected function requestBody($query, array $parameters = null);
 
 
     /**
@@ -123,15 +139,35 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
+     * End Abstract Methods
+     */
+
+
+
+
+
+
+    /**
+     * Final methods; MUST not be overrided;
+     */
+
+    /**
      * performs request to geocoder
-     * must be overrided in child classes
      *
      * @param string $query
      * @param string $kind
      * @param integer $skip
      * @return \stdClass
      */
-    abstract protected function request($query, array $parameters = null);
+    final protected function request($query, array $parameters = null)
+    {
+
+        $current = $this->beforeRequest();
+        $result = $this->requestBody($query, $parameters);
+        $this->afterRequest($current);
+        return $result;
+
+    } // end function
 
 
     /**
@@ -158,6 +194,11 @@ abstract class GeoCollection implements QueryInterface
         }
 
     } // end function
+
+
+    /**
+     * End Final Methods;
+     */
 
 
 
@@ -255,7 +296,7 @@ abstract class GeoCollection implements QueryInterface
         $objects = $this->geoObjects;
         $this->geoObjects = [];
         $id = [];
-        $kinds = [];
+        //$kinds = [];
 
         if (is_array($parameters)) {
 
@@ -277,6 +318,8 @@ abstract class GeoCollection implements QueryInterface
                 $id = $objects;
             }
 
+            $kinds = $id;
+
             if (isset($parameters['kind'])) {
                 if (is_array($parameters['kind'])) {
                     foreach ($parameters['kind'] as $kind) {
@@ -293,8 +336,6 @@ abstract class GeoCollection implements QueryInterface
         }
 
         $this->geoObjects = $kinds;
-
-        $this->selectCustom();
 
         return $this;
 
