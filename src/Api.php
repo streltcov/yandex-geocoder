@@ -2,9 +2,6 @@
 
 namespace streltcov\geocoder;
 
-use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\Static_;
-
 /**
  * Copyright 2018 Peter Streltsov
  *
@@ -30,32 +27,6 @@ class Api
 
     public static $responsecode;
 
-    private static $lang = [
-        'RU' => 'ru_RU',
-        'US' => 'en_US',
-        'EN' => 'en_RU',
-        'UA' => 'uk_UA',
-        'BY' => 'be_BY',
-        'TR' => 'tr_TR'
-    ];
-
-    private static $kind = [
-        'house',
-        'street',
-        'metro',
-        'district',
-        'locality',
-        'province',
-        'country',
-        'hydro'
-    ];
-
-    public static $parameters = [
-        'kind' => null,
-        'skip' => null,
-        'lang' => null
-    ];
-
     private static $api_url = 'https://geocode-maps.yandex.ru/1.x/?geocode=';
 
 
@@ -69,8 +40,7 @@ class Api
     {
 
         $response = '';
-        $link = static::setLink($address);
-        //echo $link . PHP_EOL;
+        $link = static::generateLink($address);
         return static::request($link);
 
     } // end function
@@ -88,8 +58,7 @@ class Api
     {
 
         $response = '';
-        $link = static::setLink($coordinates, true);
-        echo $link . PHP_EOL;
+        $link = static::generateLink($coordinates, true);
         return static::request($link);
 
     } // end function
@@ -122,17 +91,13 @@ class Api
      * @param string $base
      * @return string
      */
-    private static function setLink($base, $flag = false)
+    private static function generateLink($base, $flag = false)
     {
         $link = static::$api_url . $base . '&format=json';
 
-        static::$parameters['lang'] != null ? $lang = '&lang=' . static::$parameters['lang'] : $lang = '';
-
-        isset(static::$parameters['skip']) && (int)static::$parameters['skip'] > 0 && $flag == true ?
-            $skip = '&skip=' . static::$parameters['skip'] : $skip = null;
-
-        static::$parameters['kind'] != null && in_array(static::$parameters['kind'], static::$kind) && $flag == true ?
-            $kind = '&kind=' . static::$parameters['kind'] : $kind = null;
+        Config::get('lang') != null ? $lang = '&lang=' . Config::get('lang') : $lang = null;
+        Config::get('skip') != null && $flag == true ? $skip = '&skip=' . Config::get('skip') : $skip = null;
+        Config::get('kind') != null && $flag == true ? $kind = '&kind=' . Config::get('kind') : $kind = null;
 
         return $link . $lang . $kind . $skip;
 
@@ -150,58 +115,6 @@ class Api
     {
 
         return static::$responsecode;
-
-    } // end function
-
-
-
-    /**
-     * sets locale for API request
-     * available languages - russian, english, english(USA), belorussian, turkish, ukrainian
-     * (values listed in static::$lang array)
-     *
-     * @param string $locale
-     * @return boolean
-     */
-    public static function setLocale($locale)
-    {
-
-        if (in_array($locale, array_keys(static::$lang))) {
-            static::$parameters['lang'] = static::$lang[$locale];
-            return true;
-        }
-
-        return false;
-
-    } // end function
-
-
-    /**
-     * sets global kind parameter
-     *
-     * @param $kind
-     */
-    public static function setKind($kind)
-    {
-
-        if (in_array($kind, static::$kind)) {
-            static::$parameters['kind'] = $kind;
-        }
-
-    } // end function
-
-
-    /**
-     * sets global skip parameter
-     *
-     * @param $skip
-     */
-    public static function setSkip(int $skip)
-    {
-
-        if ((int)$skip > 0) {
-            static::$parameters['skip'] = (int)$skip;
-        }
 
     } // end function
 

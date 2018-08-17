@@ -2,10 +2,8 @@
 
 namespace streltcov\geocoder\components;
 
-use streltcov\geocoder\data\ContextData;
-use streltcov\geocoder\data\GeoCollection;
+use streltcov\geocoder\collections\GeoCollection;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
-use streltcov\geocoder\data\Response;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -202,7 +200,9 @@ class GeoObject implements GeoObjectInterface
     {
 
         $coordinates = $this->getCoordinates();
-        return GeoCollection::createCollection('Context', $coordinates);
+        $parameters['kind'] = $kind;
+        $parameters['skip'] = $skip;
+        return GeoCollection::createCollection('Context', $coordinates, $parameters);
 
     } // end function
 

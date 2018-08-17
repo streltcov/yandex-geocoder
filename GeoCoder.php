@@ -4,6 +4,7 @@ namespace streltcov\YandexGeocoder;
 
 use streltcov\geocoder\Api;
 use streltcov\geocoder\collections\GeoCollection;
+use streltcov\geocoder\Config;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -68,7 +69,7 @@ class GeoCoder
     public static function locale($language)
     {
 
-        Api::setLocale($language);
+        Config::setLocale($language);
 
     } // end function
 
@@ -85,7 +86,7 @@ class GeoCoder
     public static function kind(string $kind)
     {
 
-        Api::setKind($kind);
+        Config::setKind($kind);
 
     } // end function
 
@@ -99,7 +100,7 @@ class GeoCoder
     public static function skip(int $skip)
     {
 
-        Api::setSkip($skip);
+        Config::setSkip($skip);
 
     } // end function
 

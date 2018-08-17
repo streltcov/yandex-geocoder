@@ -3,6 +3,7 @@
 namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\Api;
+use streltcov\geocoder\Config;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -40,12 +41,11 @@ class Context extends GeoCollection implements QueryInterface
         $current = $this->beforeRequest();
 
         if ($parameters['kind'] != null) {
-            Api::setKind($parameters['kind']);
+            Config::setKind($parameters['kind']);
         }
 
         if ($parameters['skip'] != null) {
-            echo "skip=" . $parameters['skip'] . PHP_EOL;
-            Api::setSkip($parameters['skip']);
+            Config::setSkip($parameters['skip']);
         }
 
         $response = (object)json_decode(Api::context($query))
@@ -96,8 +96,8 @@ class Context extends GeoCollection implements QueryInterface
     protected function afterRequest($current)
     {
 
-        Api::setSkip((int)$current['skip']);
-        Api::setKind((string)$current['kind']);
+        Config::setSkip((int)$current['skip']);
+        Config::setKind((string)$current['kind']);
 
     } // end function
 
