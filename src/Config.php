@@ -118,7 +118,10 @@ class Config
 
         if (in_array($kind, static::$allowed_kinds)) {
             static::$parameters['kind'] = $kind;
+            return true;
         }
+
+        return false;
 
     } // end function
 
@@ -134,7 +137,10 @@ class Config
 
         if ((int)$skip > 0) {
             static::$parameters['skip'] = (int)$skip;
+            return true;
         }
+
+        return false;
 
     } // end function
 

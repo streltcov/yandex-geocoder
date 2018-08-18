@@ -68,8 +68,11 @@ class GeoCoder
      */
     public static function locale($language)
     {
+        if(Config::setLocale($language)) {
+            return true;
+        }
 
-        Config::setLocale($language);
+        return false;
 
     } // end function
 
@@ -85,8 +88,11 @@ class GeoCoder
      */
     public static function kind(string $kind)
     {
+        if (Config::setKind($kind)) {
+            return true;
+        }
 
-        Config::setKind($kind);
+        return false;
 
     } // end function
 
@@ -99,8 +105,11 @@ class GeoCoder
      */
     public static function skip(int $skip)
     {
+        if (Config::setSkip($skip)) {
+            return true;
+        }
 
-        Config::setSkip($skip);
+        return false;
 
     } // end function
 

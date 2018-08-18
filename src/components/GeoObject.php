@@ -225,6 +225,18 @@ class GeoObject implements GeoObjectInterface
 
 
     /**
+     * @return string
+     */
+    public function getPrecision()
+    {
+
+        return $this->precision;
+
+    } // end function
+
+
+
+    /**
      * @return mixed
      */
     public function getName()

@@ -18,7 +18,7 @@
  */
 
 use streltcov\YandexGeocoder\GeoCoder;
-use streltcov\geocoder\Facade;
+use streltcov\geocoder\Config;
 
 system('clear');
 
@@ -35,15 +35,31 @@ class CliApp
     private static $menu;
 
     private static $main_menu = [
-
+        "1 - search geo data (address)",
+        "2 - search geo data (coordinates)",
+        "3 - set language",
+        "4 - show parameters",
+        "5 - exit"
     ];
 
     private static $collection_menu = [
-
+        "1 - select exact position",
+        "2 - select position by number (starts from 0)",
+        "3 - go back"
     ];
 
     private static $object_menu = [
-
+        "1 - show description",
+        "2 - show address",
+        "3 - show country",
+        "4 - show coordinates",
+        "5 - show kind",
+        "6 - show precision",
+        "7 - show postal code",
+        "8 - show province",
+        "9 - show locality",
+        "10 - show street",
+        "11 - go back"
     ];
 
     public function __construct()
@@ -102,65 +118,6 @@ class CliApp
     } // end function
 
 
-    /**
-     * draws menu for main()
-     */
-    private function mainMenu()
-    {
-
-        echo PHP_EOL;
-        echo "Select option:" . PHP_EOL;
-        echo PHP_EOL;
-        echo "1 - search geo data (address)" . PHP_EOL;
-        echo "2 - search geo data (coordinates)" . PHP_EOL;
-        echo "3 - set language" . PHP_EOL;
-        echo "4 - exit" . PHP_EOL;
-        echo PHP_EOL . PHP_EOL;
-        echo "(default - 4): ";
-
-    } // end function
-
-
-
-    /**
-     *
-     */
-    private function collectionMenu()
-    {
-
-        echo PHP_EOL;
-        echo "GeoCollection options:" . PHP_EOL;
-        echo PHP_EOL;
-        echo "1 - select exact position" . PHP_EOL;
-        echo "2 - select position by number (starts from 0)" . PHP_EOL;
-        echo "3 - go back". PHP_EOL;
-
-    } // end function
-
-
-
-    /**
-     *
-     */
-    private function objectMenu()
-    {
-
-        echo PHP_EOL;
-        echo "1 - show description" . PHP_EOL;
-        echo "2 - show address" . PHP_EOL;
-        echo "3 - show country" . PHP_EOL;
-        echo "4 - show coordinates" . PHP_EOL;
-        echo "5 - show kind" . PHP_EOL;
-        echo "6 - show precision" . PHP_EOL;
-        echo "7 - show postal code" . PHP_EOL;
-        echo "8 - show province" . PHP_EOL;
-        echo "9 - show locality" . PHP_EOL;
-        echo "10 - show street" . PHP_EOL;
-        echo "11 - go back" . PHP_EOL;
-
-    } // end function
-
-
 
     /**
      * provides main application scope
@@ -168,14 +125,18 @@ class CliApp
     private function main()
     {
 
+        system('clear');
+
         while (true) {
 
             $this->header();
-            $this->mainMenu();
-
-            $answer = trim(fgets(STDIN));
+            echo PHP_EOL . "Select option:" . PHP_EOL . PHP_EOL;
+            $this->plotMenu('main_menu');
 
             echo PHP_EOL;
+            echo "=>";
+
+            $answer = trim(fgets(STDIN));
 
             switch ($answer) {
                 case '1':
@@ -189,14 +150,36 @@ class CliApp
                     $this->geoCollection($coordinates, 'context');
                     break;
                 case '3':
-                    echo "Available languages: (1)RU, (2)EN, (3)US, (4)TR, (5)UA, (6)BY" . PHP_EOL;
+                    echo "Available languages: (1)RU, (2)US, (3)EN, (4)UA, (5)BY, (6)TR" . PHP_EOL;
                     $locale = trim(fgets(STDIN));
-                    GeoCoder::locale($locale);
-                    system('clear');
-                    $this->mainMenu();
-                    //system('clear');
+                    switch ($locale) {
+                        case '1':
+                            GeoCoder::locale('RU');
+                            break;
+                        case '2':
+                            GeoCoder::locale('US');
+                            break;
+                        case '3':
+                            GeoCoder::locale('EN');
+                            break;
+                        case '4':
+                            GeoCoder::locale('UA');
+                            break;
+                        case '5':
+                            GeoCoder::locale('BY');
+                            break;
+                        case '6':
+                            GeoCoder::locale('TR');
+                            break;
+                        default:
+                            break;
+                    }
+                    static::$message = 'Language set to ' . Config::get('lang');
                     break;
                 case '4':
+                    static::$message = 'locale - ' . Config::get('lang') . ", skip - " . Config::get('skip') . ", kind - " . Config::get('kind');
+                    break;
+                case '5':
                     system('clear');
                     exit();
                     break;
@@ -209,6 +192,7 @@ class CliApp
     } // end function
 
 
+
     /**
      * provides scope to work with geo collection
      */
@@ -219,7 +203,7 @@ class CliApp
 
         while(true) {
             $this->header();
-            $this->collectionMenu();
+            $this->plotMenu('collection_menu');
 
             echo PHP_EOL;
             echo "=>";
@@ -278,9 +262,7 @@ class CliApp
 
         while (true) {
             system('clear');
-
             $this->header();
-            $this->objectMenu();
             $this->plotMenu('object_menu');
             $this->command();
 
@@ -299,15 +281,28 @@ class CliApp
                     static::$command = static::$selected->getCountry();
                     break;
                 case '4':
-                    static::$command = static::$selected->getStreet();
+                    static::$command = static::$selected->getCoordinates();
                     break;
                 case '5':
                     static::$command = static::$selected->getKind();
                     break;
                 case '6':
+                    static::$command = static::$selected->getPrecision();
                     break;
                 case '7':
+                    static::$command = static::$selected->getPostalCode();
                     break;
+                case '8':
+                    static::$command = static::$selected->getProvince();
+                    break;
+                case '9':
+                    static::$command = static::$selected->getLocality();
+                    break;
+                case '10':
+                    static::$command = static::$selected->getStreet();
+                    break;
+                case '11':
+                    return;
                 default:
                     return;
             }

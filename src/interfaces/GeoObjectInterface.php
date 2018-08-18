@@ -32,6 +32,12 @@ interface GeoObjectInterface
      */
     public function isExact();
 
+
+    /**
+     * @return string
+     */
+    public function getPrecision();
+
     /**
      * @param string $kind
      * @return Context
