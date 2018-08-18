@@ -18,90 +18,304 @@
  */
 
 use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\geocoder\Facade;
 
 system('clear');
 
 $autoload = '../vendor/autoload.php';
 require_once $autoload;
 
-/**
- * @param string $coordinates
- */
-$requestcontext = function ($coordinates) {
+class CliApp
+{
 
-};
+    private static $geodata = null;
+    private static $selected = null;
+    private static $message = null;
+    private static $command;
+    private static $menu;
 
-/**
- * @param string $address
- */
-$request = function ($address) use ($requestcontext) {
-    system('clear');
-    $data = GeoCoder::search($address);
+    private static $main_menu = [
 
-    $command = 0;
-    while ($command != 7) {
-        echo "Data requested" . PHP_EOL;
+    ];
+
+    private static $collection_menu = [
+
+    ];
+
+    private static $object_menu = [
+
+    ];
+
+    public function __construct()
+    {
+
+        $this->main();
+
+    } // end construct
+
+
+    private function header()
+    {
+
+        system('clear');
+        $data = static::$geodata;
         echo PHP_EOL;
-        echo "Results found: " . $data->found() . PHP_EOL;
-        echo "Current position selected" . PHP_EOL;
+        echo "     YANDEX GEOCODER" . PHP_EOL;
         echo PHP_EOL;
-        echo "1 - check exact" . PHP_EOL;
-        echo "2 - select exact position" . PHP_EOL;
-        echo "3 - select position by number (from 1 to number of results found)" . PHP_EOL;
-        echo "7 - go back". PHP_EOL;
-        echo PHP_EOL . PHP_EOL;
-        echo "Select option: ";
-        $command = trim(fgets(STDIN));
-        switch ($command) {
-            case '1':
-                echo PHP_EOL;
-                if ($data->hasExact()) {
-                    echo "exact position";
-                } else {
-                    echo "Exact position has not been found" . PHP_EOL;
-                }
-                break;
-            case '7':
-                system('clear');
-                return;
-                break;
+        echo "===========================================================================" . PHP_EOL;
+        echo PHP_EOL;
+        echo "STATUS: " . static::$message . PHP_EOL;
+        echo "===========================================================================" . PHP_EOL;
+
+        if ($data != null) {
+
+            $data->hasExact() ? $found = 'Yes' : $found = 'No';
+            echo PHP_EOL;
+            echo "Results found: " . $data->found() . PHP_EOL;
+            echo "Exact position: " . $found . PHP_EOL;
+            echo "===========================================================================" . PHP_EOL;
         }
+
+    } // end function
+
+
+    private function command()
+    {
+
+        echo PHP_EOL;
+        echo "===========================================================================" . PHP_EOL;
+        echo "***************************************************************************" . PHP_EOL;
+        echo "COMMAND: " . static::$command . PHP_EOL;
+        echo "***************************************************************************" . PHP_EOL;
+
     }
 
-}; // end function
+    private function plotMenu($menuname)
+    {
+
+        static::$menu = static::$$menuname;
+
+        foreach (static::$menu as $item) {
+            echo $item . PHP_EOL;
+        }
+
+    } // end function
 
 
-/**
- * main
- */
-while (true) {
+    /**
+     * draws menu for main()
+     */
+    private function mainMenu()
+    {
 
-    echo PHP_EOL;
-    echo "1 - search geo data (address)" . PHP_EOL;
-    echo "2 - search geo context data (coordinates)" . PHP_EOL;
-    echo "3 - exit" . PHP_EOL;
-    echo "(default - 3): ";
-    $answer = trim(fgets(STDIN));
+        echo PHP_EOL;
+        echo "Select option:" . PHP_EOL;
+        echo PHP_EOL;
+        echo "1 - search geo data (address)" . PHP_EOL;
+        echo "2 - search geo data (coordinates)" . PHP_EOL;
+        echo "3 - set language" . PHP_EOL;
+        echo "4 - exit" . PHP_EOL;
+        echo PHP_EOL . PHP_EOL;
+        echo "(default - 4): ";
 
-    switch ($answer) {
-        case '1':
-            echo "Type address to request data:";
-            $address = trim(fgets(STDIN));
-            $request($address);
-            break;
-        case '2':
-            echo "Type coordinates to request context data:";
-            $coordinates = trim(fgets(STDIN));
-            $requestcontext($coordinates);
-            break;
-        case '3':
-            exit();
-            break;
-        default:
-            exit();
-            break;
-    }
+    } // end function
 
-    system('clear');
 
-}
+
+    /**
+     *
+     */
+    private function collectionMenu()
+    {
+
+        echo PHP_EOL;
+        echo "GeoCollection options:" . PHP_EOL;
+        echo PHP_EOL;
+        echo "1 - select exact position" . PHP_EOL;
+        echo "2 - select position by number (starts from 0)" . PHP_EOL;
+        echo "3 - go back". PHP_EOL;
+
+    } // end function
+
+
+
+    /**
+     *
+     */
+    private function objectMenu()
+    {
+
+        echo PHP_EOL;
+        echo "1 - show description" . PHP_EOL;
+        echo "2 - show address" . PHP_EOL;
+        echo "3 - show country" . PHP_EOL;
+        echo "4 - show coordinates" . PHP_EOL;
+        echo "5 - show kind" . PHP_EOL;
+        echo "6 - show precision" . PHP_EOL;
+        echo "7 - show postal code" . PHP_EOL;
+        echo "8 - show province" . PHP_EOL;
+        echo "9 - show locality" . PHP_EOL;
+        echo "10 - show street" . PHP_EOL;
+        echo "11 - go back" . PHP_EOL;
+
+    } // end function
+
+
+
+    /**
+     * provides main application scope
+     */
+    private function main()
+    {
+
+        while (true) {
+
+            $this->header();
+            $this->mainMenu();
+
+            $answer = trim(fgets(STDIN));
+
+            echo PHP_EOL;
+
+            switch ($answer) {
+                case '1':
+                    echo "Type address:";
+                    $address = trim(fgets(STDIN));
+                    $this->geoCollection($address, 'direct');
+                    break;
+                case '2':
+                    echo "Search coordinates:";
+                    $coordinates = trim(fgets(STDIN));
+                    $this->geoCollection($coordinates, 'context');
+                    break;
+                case '3':
+                    echo "Available languages: (1)RU, (2)EN, (3)US, (4)TR, (5)UA, (6)BY" . PHP_EOL;
+                    $locale = trim(fgets(STDIN));
+                    GeoCoder::locale($locale);
+                    system('clear');
+                    $this->mainMenu();
+                    //system('clear');
+                    break;
+                case '4':
+                    system('clear');
+                    exit();
+                    break;
+                default:
+                    $this->main();
+                    break;
+            }
+        }
+
+    } // end function
+
+
+    /**
+     * provides scope to work with geo collection
+     */
+    private function geoCollection($query)
+    {
+
+        static::$geodata = GeoCoder::search($query);
+
+        while(true) {
+            $this->header();
+            $this->collectionMenu();
+
+            echo PHP_EOL;
+            echo "=>";
+            $answer = trim(fgets(STDIN));
+
+            switch ($answer) {
+                case '1':
+                    if (static::$geodata->hasExact()) {
+                        static::$selected = static::$geodata->exact();
+                        static::$message = 'Exact object selected' . PHP_EOL;
+                    } else {
+                        static::$message = 'No exact object in collection' . PHP_EOL;
+                    }
+                    break;
+                case '2':
+                    echo PHP_EOL;
+                    echo "Type number: ";
+                    $number = (int)trim(fgets(STDIN));
+                    $all = static::$geodata->all();
+                    if (isset($all[$number])) {
+                        static::$selected = $all[$number];
+                        static::$message = 'Selected object no.' . $number . PHP_EOL;
+                        return $this->geoObject();
+                    } else {
+                        static::$message = 'Requested object does not exist' . PHP_EOL;
+                    }
+                    break;
+                case '3':
+                    return;
+                    break;
+            }
+        }
+
+    } // end function
+
+
+    private function contextCollection($coordinates, $kind = null, $skip = null)
+    {
+
+        $this->header();
+        $this->collectionMenu();
+
+    } // end function
+
+
+    /**
+     * provides scope to work with geo object
+     */
+    private function geoObject()
+    {
+
+        if (static::$selected == null) {
+            static::$message = 'GeoObject is empty!' . PHP_EOL;
+            return;
+        }
+
+        while (true) {
+            system('clear');
+
+            $this->header();
+            $this->objectMenu();
+            $this->plotMenu('object_menu');
+            $this->command();
+
+            echo PHP_EOL;
+            echo "=>";
+            $answer = trim(fgets(STDIN));
+
+            switch ($answer) {
+                case '1':
+                    static::$command = static::$selected->getDescription();
+                    break;
+                case '2':
+                    static::$command = static::$selected->getAddress();
+                    break;
+                case '3':
+                    static::$command = static::$selected->getCountry();
+                    break;
+                case '4':
+                    static::$command = static::$selected->getStreet();
+                    break;
+                case '5':
+                    static::$command = static::$selected->getKind();
+                    break;
+                case '6':
+                    break;
+                case '7':
+                    break;
+                default:
+                    return;
+            }
+        }
+
+    }// end function
+
+} // end class
+
+
+new CliApp();

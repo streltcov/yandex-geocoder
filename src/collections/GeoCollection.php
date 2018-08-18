@@ -276,7 +276,7 @@ abstract class GeoCollection implements QueryInterface
     public function found()
     {
 
-        return $this->results;
+        return count($this->geoObjects);
 
     } // end function
 

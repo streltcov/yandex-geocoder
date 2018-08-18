@@ -15,7 +15,8 @@
         "psr-4": {
             "streltcov\\YandexGeocoder\\": "",
             "streltcov\\geocoder\\": "src",
-            "streltcov\\geocoder\\data\\": "/src/data",
+            "streltcov\\geocoder\\collections\\": "/src/collections",
+            "streltcov\\geocoder\\bin\\": "/src/bin",
             "streltcov\\geocoder\\components\\": "/src/components",
             "streltcov\\geocoder\\errors\\": "/src/errors",
             "streltcov\\geocoder\\interfaces\\": "/src/interfaces"
