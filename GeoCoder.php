@@ -33,7 +33,7 @@ class GeoCoder
      * creates and returns GeoData object with address parameter
      *
      * @param string $address
-     * @return GeoData
+     * @return GeoCollection
      */
     public static function search($address)
     {
@@ -48,7 +48,7 @@ class GeoCoder
      *
      * @param string $kind
      * @param string $coordinates
-     * @return ContextData
+     * @return GeoCollection
      */
     public static function searchContext($coordinates, $parameters = null)
     {
@@ -65,6 +65,7 @@ class GeoCoder
      *
      * @see Api
      * @param string $language
+     * @return boolean
      */
     public static function locale($language)
     {
@@ -85,6 +86,7 @@ class GeoCoder
      *
      * @see Api::$kinds - available values for $kind argument
      * @param string $kind
+     * @return boolean
      */
     public static function kind(string $kind)
     {
@@ -102,6 +104,7 @@ class GeoCoder
      * will be applied to all queries
      *
      * @param int $skip
+     * @return boolean
      */
     public static function skip(int $skip)
     {

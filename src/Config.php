@@ -34,6 +34,7 @@ class Config
     ];
 
     private static $parameters = [
+        'error' => false,
         'kind' => null,
         'skip' => null,
         'lang' => null
@@ -81,6 +82,60 @@ class Config
         }
 
         return static::$instance;
+
+    } // end function
+
+
+
+    /**
+     * sets all parameters to null
+     *
+     * @return boolean
+     */
+    public static function reset()
+    {
+
+        static::$parameters['lang'] = null;
+        static::$parameters['skip'] = null;
+        static::$parameters['kind'] = null;
+
+        return true;
+
+    } // end function
+
+
+
+    /**
+     * @param bool $error
+     * @return bool
+     */
+    public static function setError($error)
+    {
+
+        if (is_bool($error)) {
+            static::$parameters['error'] = $error;
+            return true;
+        }
+        return false;
+
+    } // end function
+
+
+
+    /**
+     *
+     */
+    public static function errorMessage()
+    {
+
+        switch (static::$parameters['error']) {
+            case false:
+                return null;
+                break;
+            case true:
+                return "Error, check request";
+                break;
+        }
 
     } // end function
 

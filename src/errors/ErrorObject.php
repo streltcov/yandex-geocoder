@@ -3,6 +3,7 @@
 namespace streltcov\geocoder\errors;
 
 use streltcov\geocoder\components\GeoObject;
+use streltcov\geocoder\Config;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -34,14 +35,14 @@ class ErrorObject extends GeoObject
         $this->precision = 'exact';
 
         // error properties
-        $error_message = 'Error, no results found; please, check requested data';
+        $error_message = Config::errorMessage();
         $this->description = $error_message;
         $this->name = $error_message;
         $this->envelope = $error_message;
-        $this->metadata = $error_message;
+        //$this->metadata = $error_message;
         $this->coordinates = $error_message;
         $this->address = $error_message;
-        $this->addressdetails = $error_message;
+        //$this->addressdetails = $error_message;
 
     } // end construct
 

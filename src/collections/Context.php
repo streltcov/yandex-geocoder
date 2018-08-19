@@ -40,12 +40,16 @@ class Context extends GeoCollection implements QueryInterface
 
         $current = $this->beforeRequest();
 
-        if ($parameters['kind'] != null) {
-            Config::setKind($parameters['kind']);
+        if (isset($parameters['kind'])) {
+            if ($parameters['kind'] != null) {
+                Config::setKind($parameters['kind']);
+            }
         }
 
-        if ($parameters['skip'] != null) {
-            Config::setSkip($parameters['skip']);
+        if (isset($parameters['skip'])) {
+            if ($parameters['skip'] != null) {
+                Config::setSkip($parameters['skip']);
+            }
         }
 
         $response = (object)json_decode(Api::context($query))

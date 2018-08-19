@@ -23,7 +23,7 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 
 /**
- * Class Component
+ * Class GeoCollection
  *
  * @package streltcov\geocoder
  */
@@ -49,6 +49,11 @@ abstract class GeoCollection implements QueryInterface
      * @var string
      */
     protected $request;
+
+    /**
+     * @var int
+     */
+    private $found;
 
     /**
      * number of results found in response
@@ -180,10 +185,11 @@ abstract class GeoCollection implements QueryInterface
     {
 
         $this->metaData = $api_response->metaDataProperty->GeocoderResponseMetaData;
+        $this->found = $this->metaData->found;
         $this->results = (int)$this->metaData->results;
         $this->featureMember = $api_response->featureMember;
 
-        $this->results == 0 ? $this->error = true : $this->error = false;
+        $this->found == 0 ? $this->error = true : $this->error = false;
         switch ($this->error) {
             case false:
                 $this->initCollection($api_response);
@@ -399,12 +405,16 @@ abstract class GeoCollection implements QueryInterface
     {
 
         if ($number == null) {
-            return array_shift($this->geoObjects);
+            if (isset($this->geoObjects[0])) {
+                return $this->geoObjects[0];
+            }
         } else {
             if (array_key_exists($number, $this->geoObjects)) {
                 return $this->geoObjects[$number];
             } else {
-                return array_shift($this->geoObjects);
+                if (isset($this->geoObjects[0])) {
+                    return $this->geoObjects[0];
+                }
             }
         }
 

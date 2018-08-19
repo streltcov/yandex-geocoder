@@ -101,7 +101,7 @@ class GeoObject implements GeoObjectInterface
             $this->description = $response->description;
         }
         $this->coordinates = $response->Point->pos;
-        $this->envelope = (array)$response->boundedBy->Envelope;
+        $this->envelope = $response->boundedBy->Envelope;
         $metadata = $response->metaDataProperty->GeocoderMetaData;
 
         $this->init($metadata);
