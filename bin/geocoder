@@ -44,8 +44,9 @@ class CliApp
 
     private static $collection_menu = [
         "1 - select exact position",
-        "2 - select position by number (starts from 0)",
-        "3 - go back"
+        "2 - show results list",
+        "3 - select position by number (starts from 0)",
+        "4 - go back"
     ];
 
     private static $object_menu = [
@@ -59,7 +60,8 @@ class CliApp
         "8 - show province",
         "9 - show locality",
         "10 - show street",
-        "11 - go back"
+        "11 - search context by coordinates",
+        "12 - go back"
     ];
 
     public function __construct()
@@ -140,9 +142,10 @@ class CliApp
 
             switch ($answer) {
                 case '1':
+                    echo PHP_EOL;
                     echo "Type address:";
                     $address = trim(fgets(STDIN));
-                    $this->geoCollection($address, 'direct');
+                    $this->geoCollection($address);
                     break;
                 case '2':
                     echo "Search coordinates:";
@@ -196,13 +199,19 @@ class CliApp
     /**
      * provides scope to work with geo collection
      */
-    private function geoCollection($query)
+    private function geoCollection($query, array $parameters = null)
     {
 
-        static::$geodata = GeoCoder::search($query);
+        if (isset($parameters)) {
+            static::$geodata = GeoCoder::searchContext($query, $parameters);
+        } else {
+            statis::$geodata = GeoCoder::search($query);
+        }
 
         while(true) {
             $this->header();
+            echo PHP_EOL;
+            echo "Select option: " . PHP_EOL;
             $this->plotMenu('collection_menu');
 
             echo PHP_EOL;
@@ -211,18 +220,27 @@ class CliApp
 
             switch ($answer) {
                 case '1':
-                    if (static::$geodata->hasExact()) {
-                        static::$selected = static::$geodata->exact();
+                    if (statis::$geodata->hasExact()) {
+                        static::$selected = statis::$geodata->exact();
                         static::$message = 'Exact object selected' . PHP_EOL;
                     } else {
                         static::$message = 'No exact object in collection' . PHP_EOL;
                     }
                     break;
                 case '2':
+                    $all = statis::$geodata->all();
+                    echo PHP_EOL . PHP_EOL;
+                    echo "Listed objects:" . PHP_EOL;
+                    foreach ($all as $key => $item) {
+                        echo $key . ' - ' . $item->getDescription() . PHP_EOL;
+                    }
+                    fgets(STDIN);
+                    break;
+                case '3':
                     echo PHP_EOL;
                     echo "Type number: ";
                     $number = (int)trim(fgets(STDIN));
-                    $all = static::$geodata->all();
+                    $all = statis::$geodata->all();
                     if (isset($all[$number])) {
                         static::$selected = $all[$number];
                         static::$message = 'Selected object no.' . $number . PHP_EOL;
@@ -231,22 +249,14 @@ class CliApp
                         static::$message = 'Requested object does not exist' . PHP_EOL;
                     }
                     break;
-                case '3':
-                    return;
+                case '4':
+                    false;
                     break;
             }
         }
 
     } // end function
 
-
-    private function contextCollection($coordinates, $kind = null, $skip = null)
-    {
-
-        $this->header();
-        $this->collectionMenu();
-
-    } // end function
 
 
     /**
@@ -302,9 +312,12 @@ class CliApp
                     static::$command = static::$selected->getStreet();
                     break;
                 case '11':
+                    $this->geoCollection(static::$selected->getCoordinates());
+                    break;
+                case '12':
                     return;
                 default:
-                    return;
+                    break;
             }
         }
 

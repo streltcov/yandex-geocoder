@@ -2,8 +2,8 @@
 
 namespace streltcov\geocoder\errors;
 
-use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\Config;
+use streltcov\geocoder\interfaces\GeoObjectInterface;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -25,26 +25,80 @@ use streltcov\geocoder\Config;
  *
  * @package streltcov\geocoder\errors
  */
-class ErrorObject extends GeoObject
+class ErrorObject implements GeoObjectInterface
 {
 
     public function __construct()
     {
 
-        // TODO: remove after update getExact() from GeoData
-        $this->precision = 'exact';
-
-        // error properties
-        $error_message = Config::errorMessage();
-        $this->description = $error_message;
-        $this->name = $error_message;
-        $this->envelope = $error_message;
-        //$this->metadata = $error_message;
-        $this->coordinates = $error_message;
-        $this->address = $error_message;
-        //$this->addressdetails = $error_message;
-
     } // end construct
+
+    public function isExact()
+    {
+
+        return true;
+
+    }
+
+    public function getDescription()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getName()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getStreet()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getAddress()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getLocality()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getPostalcode()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getCountry()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getCoordinates()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getPoint()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getCountryCode()
+    {
+        return Config::errorMessage();
+    }
+
+    public function getPrecision()
+    {
+        return 'exact';
+    }
+
+    public function getProvince()
+    {
+        return Config::errorMessage();
+    }
 
 
     /**

@@ -49,6 +49,16 @@ interface GeoObjectInterface
      */
 
     /**
+     * @return mixed
+     */
+    public function getName();
+
+    /**
+     * @return mixed
+     */
+    public function getDescription();
+
+    /**
      * @return string
      */
     public function getPostalcode();
