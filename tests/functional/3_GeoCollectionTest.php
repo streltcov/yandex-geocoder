@@ -35,7 +35,7 @@ class GeoCollectionTest_3 extends TestCase
     {
 
         $this->assertTrue($this->collection->hasExact());
-        $this->assertEquals(10, $this->collection->found());
+        $this->assertEquals(1, $this->collection->found());
         $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $this->collection->one());
         $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $this->collection->exact());
 

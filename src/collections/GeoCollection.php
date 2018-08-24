@@ -24,11 +24,17 @@ use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
  * Class GeoCollection
+ * Contains collection metadata and GeoObjects
+ * Provides fluent interface for geoobjects
  *
  * @package streltcov\geocoder
  */
 abstract class GeoCollection implements QueryInterface
 {
+
+    protected $selected = [];
+
+    protected $filter = false;
 
     protected $response_code;
 
@@ -49,11 +55,6 @@ abstract class GeoCollection implements QueryInterface
      * @var string
      */
     protected $request;
-
-    /**
-     * @var int
-     */
-    private $found;
 
     /**
      * number of results found in response
@@ -83,7 +84,7 @@ abstract class GeoCollection implements QueryInterface
     protected $featureMember;
 
     /**
-     * array, contains GeoObject
+     * array, contains GeoObjects
      *
      * @var array
      */
@@ -91,9 +92,10 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
-     * Response constructor
+     * GeoCollection constructor
      *
-     * @param $query
+     * @param string $query
+     * @param array $parameters
      */
     final public function __construct($query, $parameters = null)
     {
@@ -112,6 +114,9 @@ abstract class GeoCollection implements QueryInterface
     /**
      * Abstract Methods; Define in child classes;
      */
+
+
+    abstract protected function initCustom($data);
 
 
     /**
@@ -160,8 +165,7 @@ abstract class GeoCollection implements QueryInterface
      * performs request to geocoder
      *
      * @param string $query
-     * @param string $kind
-     * @param integer $skip
+     * @param array $parameters
      * @return \stdClass
      */
     final protected function request($query, array $parameters = null)
@@ -184,20 +188,52 @@ abstract class GeoCollection implements QueryInterface
     final protected function initClass($api_response)
     {
 
-        $this->metaData = $api_response->metaDataProperty->GeocoderResponseMetaData;
-        $this->found = $this->metaData->found;
-        $this->results = (int)$this->metaData->results;
+        $this->initCustom($api_response->metaDataProperty->GeocoderResponseMetaData);
         $this->featureMember = $api_response->featureMember;
 
-        $this->found == 0 ? $this->error = true : $this->error = false;
+        $this->metaData->getFound() == 0 ? $this->error = true : $this->error = false;
         switch ($this->error) {
             case false:
-                $this->initCollection($api_response);
+                $this->initCollection();
                 break;
             case true:
                 $this->initErrorColection();
                 break;
         }
+
+    } // end function
+
+
+
+    /**
+     *
+     *
+     * @return array
+     */
+    final protected function isSelected()
+    {
+
+        if (count($this->selected) == 0 && $this->filter == true) {
+            return $this->selected;
+        } elseif (count($this->selected) == 0 && $this->filter == false) {
+            return $this->geoObjects;
+        } else {
+            return $this->selected;
+        }
+
+    } // end function
+
+
+
+    /**
+     * sets selection parameters and results to zero;
+     * should be used in 'resulting' methods (one() & all());
+     */
+    final protected function reset()
+    {
+
+        $this->filter = false;
+        $this->selected = [];
 
     } // end function
 
@@ -213,7 +249,7 @@ abstract class GeoCollection implements QueryInterface
      *
      * @param \stdClass $response
      */
-    protected function initCollection(\stdClass $response)
+    protected function initCollection()
     {
 
         foreach ($this->featureMember as $item) {
@@ -253,7 +289,7 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
-     * checks if exist exact result in response
+     * checks if exist objet with exact precision in response
      *
      * @return boolean
      */
@@ -293,55 +329,64 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
+     * filters geoobjects array with id (index) and kind parameters
+     *
      * @param array $parameters
      * @return $this
      */
     public function select(array $parameters = null)
     {
 
-        $objects = $this->geoObjects;
-        $this->geoObjects = [];
-        $id = [];
-        //$kinds = [];
+        $this->selected = $this->isSelected();
+        $this->filter = true;
+        $selected = [];
 
         if (is_array($parameters)) {
 
             if (isset($parameters['id'])) {
                 if (is_array($parameters['id'])) {
-                    foreach ($parameters['id'] as $num) {
-                        foreach ($objects as $key => $object) {
-                            if ($num == $key) {
-                                $id[$key] = $object;
+                    foreach ($this->selected as $key => $object) {
+                        foreach ($parameters['id'] as $number) {
+                            if ($number == $key) {
+                                $selected[$key] = $object;
                             }
                         }
                     }
                 } else {
-                    if (isset($objects[$parameters['id']])) {
-                        $id[$parameters['id']] = $objects[$parameters['id']];
+                    if (isset($this->selected[$parameters['id']])) {
+                        $selected[$parameters['id']] = $this->selected[$parameters['id']];
                     }
                 }
-            } else {
-                $id = $objects;
             }
 
-            $kinds = $id;
+            if (count($selected) != 0) {
+                $this->selected = $selected;
+            }
+
+            $kinds = [];
 
             if (isset($parameters['kind'])) {
                 if (is_array($parameters['kind'])) {
                     foreach ($parameters['kind'] as $kind) {
-                        foreach ($id as $key => $object) {
+                        foreach ($this->selected as $key => $object) {
                             if ($object->getKind() == $kind) {
                                 $kinds[$key] = $object;
                             }
                         }
                     }
+                } else {
+                    foreach ($this->selected as $key => $object) {
+                        if ($object->getKind() == $parameters['kind']) {
+                            $kinds[$key] = $object;
+                        }
+                    }
                 }
             } else {
-
+                $kinds = $this->isSelected();
             }
         }
 
-        $this->geoObjects = $kinds;
+        $this->selected = $kinds;
 
         return $this;
 
@@ -361,7 +406,9 @@ abstract class GeoCollection implements QueryInterface
         $query = strtolower((string)$query);
         $search = [];
 
-        foreach ($this->geoObjects as $object) {
+        $find = $this->isSelected();
+
+        foreach ($find as $object) {
             $data = $object->getData();
             $data = implode(' ', $data);
             if (strpos($data, $query)) {
@@ -369,8 +416,7 @@ abstract class GeoCollection implements QueryInterface
             }
         } // endfor
 
-        //return $search;
-        $this->geoObjects = $search;
+        $this->selected = $search;
 
         return $this;
 
@@ -404,16 +450,21 @@ abstract class GeoCollection implements QueryInterface
     public function one($number = null)
     {
 
+        $one = $this->isSelected();
+
         if ($number == null) {
-            if (isset($this->geoObjects[0])) {
-                return $this->geoObjects[0];
+            if (isset($one[0])) {
+                $this->reset();
+                return $one[0];
             }
         } else {
-            if (array_key_exists($number, $this->geoObjects)) {
-                return $this->geoObjects[$number];
+            if (array_key_exists($number, $one)) {
+                $this->reset();
+                return $one[$number];
             } else {
-                if (isset($this->geoObjects[0])) {
-                    return $this->geoObjects[0];
+                if (isset($one[0])) {
+                    $this->reset();
+                    return $one[0];
                 }
             }
         }
@@ -427,7 +478,9 @@ abstract class GeoCollection implements QueryInterface
     public function all()
     {
 
-        return $this->geoObjects;
+        $all = $this->isSelected();
+        $this->reset();
+        return $all;
 
     } // end function
 

@@ -3,6 +3,7 @@
 namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\Api;
+use streltcov\geocoder\components\CollectionData;
 use streltcov\geocoder\Config;
 use streltcov\geocoder\interfaces\QueryInterface;
 
@@ -28,6 +29,12 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 class Context extends GeoCollection implements QueryInterface
 {
+
+
+    protected function initCustom($data)
+    {
+        $this->metaData = new CollectionData($data);
+    }
 
     /**
      * performs request to geocoder
@@ -63,6 +70,11 @@ class Context extends GeoCollection implements QueryInterface
     } // end function
 
 
+
+    /**
+     * @param $parameters
+     * @return array|mixed
+     */
     protected function parseParameters($parameters)
     {
 
@@ -77,8 +89,6 @@ class Context extends GeoCollection implements QueryInterface
             }
         }
 
-        var_dump($result);
-
         return $result;
 
     } // end function
@@ -89,6 +99,10 @@ class Context extends GeoCollection implements QueryInterface
      */
     protected function beforeRequest()
     {
+
+        $current['skip'] = Config::get('skip');
+        $current['kind'] = Config::get('kind');
+        return $current;
 
     } // end function
 

@@ -3,6 +3,7 @@
 namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\Api;
+use streltcov\geocoder\components\CollectionData;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -29,6 +30,16 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 class Direct extends GeoCollection implements QueryInterface
 {
+
+    /**
+     * @param \stdClass $data
+     */
+    protected function initCustom($data)
+    {
+
+        $this->metaData = new CollectionData($data);
+
+    } // end function
 
     /**
      * performs request to geocoder
@@ -60,14 +71,26 @@ class Direct extends GeoCollection implements QueryInterface
     } // end function
 
 
+    /**
+     *
+     */
     protected function beforeRequest()
     {
-        // TODO: Implement beforeRequest() method.
-    }
 
+        return [];
+
+    } // end function
+
+
+
+    /**
+     * @param array $parameters
+     */
     protected function afterRequest($parameters)
     {
-        // TODO: Implement afterRequest() method.
-    }
+
+        // empty
+
+    } // end function
 
 } // end class
