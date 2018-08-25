@@ -92,8 +92,8 @@ class ConfigTest extends TestCase
         $this->assertTrue(Config::setKind('locality'));
         $this->assertTrue(Config::setKind('province'));
         $this->assertTrue(Config::setKind('country'));
+        $this->assertTrue(Config::setKind(null));
 
-        $this->assertFalse(Config::setKind(null));
         $this->assertFalse(Config::setKind('home'));
         $this->assertFalse(Config::setKind('city'));
 

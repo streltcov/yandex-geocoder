@@ -31,6 +31,22 @@ use streltcov\geocoder\interfaces\QueryInterface;
 class Direct extends GeoCollection implements QueryInterface
 {
 
+
+    /**
+     * checks format of requested string
+     *
+     * @param string $request
+     * @return bool|void
+     */
+    protected function validateRequest($request)
+    {
+
+        return preg_match("/(^[\D]{2,})/", $request);
+
+    } // end function
+
+
+
     /**
      * @param \stdClass $data
      */

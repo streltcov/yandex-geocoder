@@ -31,10 +31,35 @@ class Context extends GeoCollection implements QueryInterface
 {
 
 
+    /**
+     * @param string $request
+     * @return bool|false|int
+     */
+    protected function validateRequest($request)
+    {
+
+        if (preg_match("/(^[0-9]{2}.[0-9]{1,}.{1,}[0-9]{2}.[0-9]{1,})/", $request)) {
+            return true;
+        }
+
+        return false;
+
+    } // end function
+
+
+
+    /**
+     * @param $data
+     * @return mixed|void
+     */
     protected function initCustom($data)
     {
+
         $this->metaData = new CollectionData($data);
-    }
+
+    } // end function
+
+
 
     /**
      * performs request to geocoder

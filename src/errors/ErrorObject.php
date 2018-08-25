@@ -100,6 +100,11 @@ class ErrorObject implements GeoObjectInterface
         return Config::errorMessage();
     }
 
+    public function getKind()
+    {
+        return Config::errorMessage();
+    }
+
 
     /**
      * parent method redefinition - returns ContextError object instead Context object

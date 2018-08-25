@@ -152,7 +152,7 @@ class Config
     public static function setLocale($locale)
     {
 
-        if (in_array($locale, array_keys(static::$allowed_locales))) {
+        if (in_array($locale, array_keys(static::$allowed_locales)) || $locale == null) {
             static::$parameters['lang'] = static::$allowed_locales[$locale];
             return true;
         }
@@ -171,7 +171,7 @@ class Config
     public static function setKind($kind)
     {
 
-        if (in_array($kind, static::$allowed_kinds)) {
+        if (in_array($kind, static::$allowed_kinds) || $kind == null) {
             static::$parameters['kind'] = $kind;
             return true;
         }
@@ -193,6 +193,8 @@ class Config
         if ((int)$skip > 0) {
             static::$parameters['skip'] = (int)$skip;
             return true;
+        } elseif ((int)$skip == null || (int)$skip == 0) {
+            static::$parameters['skip'] = null;
         }
 
         return false;

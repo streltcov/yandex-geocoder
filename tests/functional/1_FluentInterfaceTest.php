@@ -91,7 +91,15 @@ class FluentInterfaceTest1 extends TestCase
     public function testFluentSelect_5()
     {
 
+        $exact = $this->collection->exact();
+        $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $exact);
+        $this->assertEquals(1, count($exact));
 
+        $select = $this->collection->select(['id' => [2, 3, 5, 7, 8]])->all();
+        $this->assertEquals(5, count($select));
+
+        $one = $this->collection->one();
+        $this->assertEquals(1, count($one));
 
     } // end function
 

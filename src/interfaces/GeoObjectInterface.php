@@ -38,25 +38,36 @@ interface GeoObjectInterface
      */
     public function getPrecision();
 
+
     /**
      * @param string $kind
      * @return Context
      */
     public function requestContext($kind);
 
+
     /**
      * GETTERS
      */
+
 
     /**
      * @return mixed
      */
     public function getName();
 
+
     /**
      * @return mixed
      */
     public function getDescription();
+
+
+    /**
+     * @return mixed
+     */
+    public function getKind();
+
 
     /**
      * @return string
@@ -75,15 +86,18 @@ interface GeoObjectInterface
      */
     public function getCountryCode();
 
+
     /**
      * @return string
      */
     public function getCountry();
 
+
     /**
      * @return string
      */
     public function getCoordinates();
+
 
     /**
      * returns object coordinates

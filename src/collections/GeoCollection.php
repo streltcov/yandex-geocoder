@@ -100,9 +100,12 @@ abstract class GeoCollection implements QueryInterface
     final public function __construct($query, $parameters = null)
     {
 
+        if (!$this->validateRequest($query)) {
+            $query = '';
+        }
+
         $parameters = $this->parseParameters($parameters);
         $api_response = $this->request($query, $parameters);
-        $this->response_code = Api::$responsecode;
         $this->initClass($api_response);
 
     } // end construct
@@ -116,6 +119,19 @@ abstract class GeoCollection implements QueryInterface
      */
 
 
+
+    /**
+     * @param string $request
+     * @return boolean
+     */
+    abstract protected function validateRequest($request);
+
+
+
+    /**
+     * @param $data
+     * @return mixed
+     */
     abstract protected function initCustom($data);
 
 
@@ -174,6 +190,7 @@ abstract class GeoCollection implements QueryInterface
         $current = $this->beforeRequest();
         $result = $this->requestBody($query, $parameters);
         $this->afterRequest($current);
+        $this->response_code = Api::$responsecode;
         return $result;
 
     } // end function
