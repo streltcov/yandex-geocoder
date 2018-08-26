@@ -24,25 +24,54 @@ class CollectionData
     private $request;
 
     /**
-     * @var
+     * @var integer
      */
     private $results;
 
     /**
-     * @var
+     * @var integer
      */
     private $found;
+
+    /**
+     * @var null|integer
+     */
+    private $skip;
+
+    /**
+     * @var null|string
+     */
+    private $kind;
 
     public function __construct(\stdClass $data)
     {
 
+        $this->request = $data->request;
         $this->responsecode = Api::$responsecode;
         $this->results = $data->results;
         $this->found = $data->found;
+        isset($data->skip) ? $this->skip = $data->skip : $this->skip = null;
+        isset($data->kind) ? $this->kind = $data->kind : $this->kind = null;
 
     } // end construct
 
 
+
+    /**
+     * @return mixed
+     */
+    public function getRequest()
+    {
+
+        return $this->request;
+
+    } // end function
+
+
+
+    /**
+     * @return int
+     */
     public function getResults()
     {
 
@@ -65,6 +94,25 @@ class CollectionData
     {
 
         return $this->responsecode;
+
+    } // end function
+
+
+
+
+    public function getSkip()
+    {
+
+        return $this->skip;
+
+    } // end function
+
+
+
+    public function getKind()
+    {
+
+        return $this->kind;
 
     } // end function
 

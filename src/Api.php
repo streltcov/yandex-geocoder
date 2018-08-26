@@ -96,7 +96,7 @@ class Api
         $link = static::$api_url . $base . '&format=json';
 
         Config::get('lang') != null ? $lang = '&lang=' . Config::get('lang') : $lang = null;
-        Config::get('skip') != null && $flag == true ? $skip = '&skip=' . Config::get('skip') : $skip = null;
+        Config::get('skip') != null ? $skip = '&skip=' . Config::get('skip') : $skip = null;
         Config::get('kind') != null && $flag == true ? $kind = '&kind=' . Config::get('kind') : $kind = null;
 
         return $link . $lang . $kind . $skip;

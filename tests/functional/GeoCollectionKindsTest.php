@@ -19,7 +19,7 @@ class GeoCollectionKindsTest extends TestCase
     protected function setUp()
     {
 
-        $this->kind1 = GeoCoder::searchContext('37.600136 55.763832', ['kind' => 'metro'])->all();
+        $this->kind1 = GeoCoder::searchContext('37.600136 55.763832', ['kind' => 'metro']);
         $this->kind2 = GeoCoder::searchContext('37.600136 55.763832', ['kind' => 'house']);
 
     } // end function
@@ -27,18 +27,31 @@ class GeoCollectionKindsTest extends TestCase
 
 
     /**
-     *
+     * testing first collection - kind1
      */
     public function testKind_1()
     {
 
-        $this->assertEquals(10, count($this->kind1));
-        foreach ($this->kind1 as $object) {
+        // checking collection data
+        $this->assertEquals('37.600136 55.763832', $this->kind1->metaData()->getRequest());
+        $this->assertEquals('metro', $this->kind1->metaData()->getKind());
+        $this->assertEquals(10, $this->kind1->metaData()->getResults());
+        $this->assertEquals(200, (int)$this->kind1->metaData()->getResponseCode());
+        //$this->assertEquals();
+
+        // receiving geoobjects array
+        $kind1 = $this->kind1->all();
+
+        // object kind must be equal to requested
+        $this->assertEquals(10, count($kind1));
+        foreach ($kind1 as $object) {
             $this->assertEquals('metro', $object->getKind());
         }
 
+        // testing global parameters - must be dropped to defaults
         $testcollection = GeoCoder::searchContext('37.600136 55.763832')->all();
 
+        // kind should not be 'metro'
         foreach ($testcollection as $object) {
             $this->assertNotEquals('metro', $object->getKind());
         }

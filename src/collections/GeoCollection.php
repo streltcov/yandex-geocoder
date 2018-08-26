@@ -441,6 +441,15 @@ abstract class GeoCollection implements QueryInterface
 
 
 
+    public function metaData()
+    {
+
+        return $this->metaData;
+
+    } // end function
+
+
+
     /**
      * finds in geoobjects array item with property 'precision' set to 'exact'
      *
