@@ -84,6 +84,12 @@ class Context extends GeoCollection implements QueryInterface
             }
         }
 
+        if (isset($parameters['lang'])) {
+            if ($parameters['lang'] != null) {
+                Config::setLocale($parameters['lang']);
+            }
+        }
+
         $response = (object)json_decode(Api::context($query))
             ->response
             ->GeoObjectCollection;
@@ -112,6 +118,9 @@ class Context extends GeoCollection implements QueryInterface
             if (isset($parameters['skip'])) {
                 $result['skip'] = $parameters['skip'];
             }
+            if (isset($parameters['lang'])) {
+                $result['lang'] = $parameters['lang'];
+            }
         }
 
         return $result;
@@ -127,6 +136,7 @@ class Context extends GeoCollection implements QueryInterface
 
         $current['skip'] = Config::get('skip');
         $current['kind'] = Config::get('kind');
+        $current['lang'] = Config::get('lang');
         return $current;
 
     } // end function
@@ -141,6 +151,7 @@ class Context extends GeoCollection implements QueryInterface
 
         Config::setSkip((int)$current['skip']);
         Config::setKind($current['kind']);
+        Config::setLocale($current['lang']);
 
     } // end function
 

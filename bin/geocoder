@@ -205,7 +205,7 @@ class CliApp
         if (isset($parameters)) {
             static::$geodata = GeoCoder::searchContext($query, $parameters);
         } else {
-            statis::$geodata = GeoCoder::search($query);
+            static::$geodata = GeoCoder::search($query);
         }
 
         while(true) {
@@ -220,15 +220,16 @@ class CliApp
 
             switch ($answer) {
                 case '1':
-                    if (statis::$geodata->hasExact()) {
-                        static::$selected = statis::$geodata->exact();
+                    if (static::$geodata->hasExact()) {
+                        static::$selected = static::$geodata->exact();
                         static::$message = 'Exact object selected' . PHP_EOL;
+                        return $this->geoObject();
                     } else {
                         static::$message = 'No exact object in collection' . PHP_EOL;
                     }
                     break;
                 case '2':
-                    $all = statis::$geodata->all();
+                    $all = static::$geodata->all();
                     echo PHP_EOL . PHP_EOL;
                     echo "Listed objects:" . PHP_EOL;
                     foreach ($all as $key => $item) {
@@ -240,7 +241,7 @@ class CliApp
                     echo PHP_EOL;
                     echo "Type number: ";
                     $number = (int)trim(fgets(STDIN));
-                    $all = statis::$geodata->all();
+                    $all = static::$geodata->all();
                     if (isset($all[$number])) {
                         static::$selected = $all[$number];
                         static::$message = 'Selected object no.' . $number . PHP_EOL;
@@ -312,10 +313,10 @@ class CliApp
                     static::$command = static::$selected->getStreet();
                     break;
                 case '11':
-                    $this->geoCollection(static::$selected->getCoordinates());
                     break;
                 case '12':
-                    return;
+                    return $this->geoCollection(static::$selected->getCoordinates());
+                    break;
                 default:
                     break;
             }

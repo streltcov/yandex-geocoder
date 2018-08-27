@@ -36,9 +36,6 @@ class FluentInterfaceTest1 extends TestCase
         $kind = $this->collection->select(['kind' => 'house'])->all();
         $this->assertEquals(10, count($kind));
 
-        /*$kind_3 = $this->collection->select(['id' => [0, 1, 2], 'kind' => 'house'])->all();
-        $this->assertEquals(3, count($kind_3));*/
-
     } // end function
 
 
