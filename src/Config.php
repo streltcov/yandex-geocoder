@@ -152,8 +152,11 @@ class Config
     public static function setLocale($locale)
     {
 
-        if (in_array($locale, array_keys(static::$allowed_locales)) || $locale == null) {
+        if (in_array($locale, array_keys(static::$allowed_locales))) {
             static::$parameters['lang'] = static::$allowed_locales[$locale];
+            return true;
+        } elseif (null == $locale) {
+            static::$parameters['lang'] = null;
             return true;
         }
 

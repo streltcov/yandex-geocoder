@@ -140,7 +140,7 @@ class Context extends GeoCollection implements QueryInterface
     {
 
         Config::setSkip((int)$current['skip']);
-        Config::setKind((string)$current['kind']);
+        Config::setKind($current['kind']);
 
     } // end function
 

@@ -151,7 +151,7 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
-     * @return void
+     * @return array
      */
     abstract protected function beforeRequest();
 

@@ -4,6 +4,7 @@ namespace streltcov\geocoder\collections;
 
 use streltcov\geocoder\Api;
 use streltcov\geocoder\components\CollectionData;
+use streltcov\geocoder\Config;
 use streltcov\geocoder\interfaces\QueryInterface;
 
 /**
@@ -57,6 +58,8 @@ class Direct extends GeoCollection implements QueryInterface
 
     } // end function
 
+
+
     /**
      * performs request to geocoder
      *
@@ -68,7 +71,15 @@ class Direct extends GeoCollection implements QueryInterface
     protected function requestBody($query, array $parameters = null)
     {
 
-        $response = (object)json_decode(Api::direct($query, $parameters))
+        if (isset($parameters['skip'])) {
+            Config::setSkip($parameters['skip']);
+        }
+
+        if (isset($parameters['lang'])) {
+            Config::setLocale($parameters['lang']);
+        }
+
+        $response = (object)json_decode(Api::direct($query))
             ->response
             ->GeoObjectCollection;
 
@@ -80,9 +91,18 @@ class Direct extends GeoCollection implements QueryInterface
     protected function parseParameters($parameters)
     {
 
-        if (isset($parameters['lang'])) {
-            return ['lang' => $parameters['lang']];
+        $result = [];
+
+        if ($parameters != null) {
+            if (isset($parameters['lang'])) {
+                $result['lang'] = $parameters['lang'];
+            }
+            if (isset($parameters['skip'])) {
+                $result['skip'] = $parameters['skip'];
+            }
         }
+
+        return $result;
 
     } // end function
 
@@ -93,19 +113,23 @@ class Direct extends GeoCollection implements QueryInterface
     protected function beforeRequest()
     {
 
-        return [];
+        $current['skip'] = Config::get('skip');
+        $current['lang'] = Config::get('lang');
+        return $current;
 
     } // end function
 
 
 
     /**
-     * @param array $parameters
+     * @param array $current
+     * @return void
      */
-    protected function afterRequest($parameters)
+    protected function afterRequest($current)
     {
 
-        // empty
+        Config::setSkip($current['skip']);
+        Config::setLocale($current['lang']);
 
     } // end function
 

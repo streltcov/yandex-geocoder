@@ -39,7 +39,6 @@ class Api
     public static function direct($address)
     {
 
-        $response = '';
         $link = static::generateLink($address);
         return static::request($link);
 
@@ -57,7 +56,6 @@ class Api
     public static function context($coordinates)
     {
 
-        $response = '';
         $link = static::generateLink($coordinates, true);
         return static::request($link);
 
@@ -66,6 +64,7 @@ class Api
 
     /**
      * @param $link
+     * @return string
      */
     private static function request($link)
     {

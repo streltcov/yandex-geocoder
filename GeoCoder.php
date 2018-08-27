@@ -35,10 +35,10 @@ class GeoCoder
      * @param string $address
      * @return GeoCollection
      */
-    public static function search($address)
+    public static function search($address, array $parameters = null)
     {
 
-        return GeoCollection::createCollection('Direct', $address);
+        return GeoCollection::createCollection('Direct', $address, $parameters);
 
     } // end function
 
