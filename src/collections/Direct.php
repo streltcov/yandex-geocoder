@@ -79,9 +79,8 @@ class Direct extends GeoCollection implements QueryInterface
             Config::setLocale($parameters['lang']);
         }
 
-        $response = (object)json_decode(Api::direct($query))
-            ->response
-            ->GeoObjectCollection;
+        $this->raw = Api::context($query);
+        $response = (object)(json_decode($this->raw))->response->GeoObjectCollection;
 
         return $response;
 

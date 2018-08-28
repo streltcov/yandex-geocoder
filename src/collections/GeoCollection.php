@@ -6,6 +6,7 @@ use streltcov\geocoder\Api;
 use streltcov\geocoder\components\GeoObject;
 use streltcov\geocoder\errors\ErrorObject;
 use streltcov\geocoder\interfaces\QueryInterface;
+use streltcov\geocoder\traits\FiltersTrait;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -31,6 +32,10 @@ use streltcov\geocoder\interfaces\QueryInterface;
  */
 abstract class GeoCollection implements QueryInterface
 {
+
+    use FiltersTrait {filterId as protected; filterKind as protected;}
+
+    protected $raw;
 
     protected $selected = [];
 
@@ -171,8 +176,6 @@ abstract class GeoCollection implements QueryInterface
 
 
 
-
-
     /**
      * Final methods; MUST not be overrided;
      */
@@ -208,7 +211,7 @@ abstract class GeoCollection implements QueryInterface
         $this->initCustom($api_response->metaDataProperty->GeocoderResponseMetaData);
         $this->featureMember = $api_response->featureMember;
 
-        $this->metaData->getFound() == 0 ? $this->error = true : $this->error = false;
+        $this->metaData()->found() == 0 ? $this->error = true : $this->error = false;
         switch ($this->error) {
             case false:
                 $this->initCollection();
@@ -305,6 +308,14 @@ abstract class GeoCollection implements QueryInterface
 
 
 
+
+    public function getRaw()
+    {
+        return $this->raw;
+    }
+
+
+
     /**
      * checks if exist objet with exact precision in response
      *
@@ -346,7 +357,7 @@ abstract class GeoCollection implements QueryInterface
 
 
     /**
-     * filters geoobjects array with id (index) and kind parameters
+     * filters GeoObjects array with id (index) and kind parameters
      *
      * @param array $parameters
      * @return $this
@@ -361,43 +372,15 @@ abstract class GeoCollection implements QueryInterface
         if (is_array($parameters)) {
 
             if (isset($parameters['id'])) {
-                if (is_array($parameters['id'])) {
-                    foreach ($this->selected as $key => $object) {
-                        foreach ($parameters['id'] as $number) {
-                            if ($number == $key) {
-                                $selected[$key] = $object;
-                            }
-                        }
-                    }
-                } else {
-                    if (isset($this->selected[$parameters['id']])) {
-                        $selected[$parameters['id']] = $this->selected[$parameters['id']];
-                    }
-                }
+                $selected = $this->filterId($this->geoObjects, $parameters['id']);
             }
 
             if (count($selected) != 0) {
                 $this->selected = $selected;
             }
 
-            $kinds = [];
-
             if (isset($parameters['kind'])) {
-                if (is_array($parameters['kind'])) {
-                    foreach ($parameters['kind'] as $kind) {
-                        foreach ($this->selected as $key => $object) {
-                            if ($object->getKind() == $kind) {
-                                $kinds[$key] = $object;
-                            }
-                        }
-                    }
-                } else {
-                    foreach ($this->selected as $key => $object) {
-                        if ($object->getKind() == $parameters['kind']) {
-                            $kinds[$key] = $object;
-                        }
-                    }
-                }
+                $kinds = $this->filterKind($this->selected, $parameters['kind']);
             } else {
                 $kinds = $this->isSelected();
             }

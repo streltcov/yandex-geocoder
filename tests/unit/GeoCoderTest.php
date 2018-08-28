@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests\unit;
 
 use streltcov\geocoder\Config;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 use PHPUnit\Framework\TestCase;
 
 require_once 'vendor/autoload.php';
@@ -26,7 +26,7 @@ class GeoCoderTest extends TestCase
         $this->address = 'TestAddress';
         $this->coordinates = '';
         $this->search = GeoCoder::search($this->address);
-        $this->context = GeoCoder::searchContext('');
+        $this->context = GeoCoder::searchPoint('');
 
     } // end function
 
@@ -145,7 +145,7 @@ class GeoCoderTest extends TestCase
     public function testMethods()
     {
 
-        $expected = ['search', 'searchContext', 'locale', 'kind', 'skip'];
+        $expected = ['search', 'searchPoint', 'locale', 'kind', 'skip'];
         $this->assertTrue($expected == $this->methods);
         $this->assertEquals($expected, $this->methods);
 

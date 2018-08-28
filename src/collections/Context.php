@@ -90,9 +90,8 @@ class Context extends GeoCollection implements QueryInterface
             }
         }
 
-        $response = (object)json_decode(Api::context($query))
-            ->response
-            ->GeoObjectCollection;
+        $this->raw = Api::context($query);
+        $response = (object)(json_decode($this->raw))->response->GeoObjectCollection;
 
         $this->afterRequest($current);
 

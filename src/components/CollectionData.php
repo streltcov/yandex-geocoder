@@ -60,7 +60,7 @@ class CollectionData
     /**
      * @return mixed
      */
-    public function getRequest()
+    public function request()
     {
 
         return $this->request;
@@ -72,7 +72,7 @@ class CollectionData
     /**
      * @return int
      */
-    public function getResults()
+    public function results()
     {
 
         return (int)$this->results;
@@ -81,7 +81,7 @@ class CollectionData
 
 
 
-    public function getFound()
+    public function found()
     {
 
         return (int)$this->found;
@@ -90,7 +90,7 @@ class CollectionData
 
 
 
-    public function getResponseCode()
+    public function responseCode()
     {
 
         return $this->responsecode;
@@ -100,7 +100,7 @@ class CollectionData
 
 
 
-    public function getSkip()
+    public function skip()
     {
 
         return $this->skip;
@@ -109,7 +109,7 @@ class CollectionData
 
 
 
-    public function getKind()
+    public function kind()
     {
 
         return $this->kind;

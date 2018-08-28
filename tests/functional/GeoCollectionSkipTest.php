@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoCollectionSkipTest
@@ -32,7 +32,7 @@ class GeoCollectionSkipTest extends TestCase
     public function testCollection_1()
     {
 
-        $this->assertEquals(5, (integer)$this->collection_2->metaData()->getSkip());
+        $this->assertEquals(5, (integer)$this->collection_2->metaData()->skip());
 
     } // end function
 
@@ -44,7 +44,7 @@ class GeoCollectionSkipTest extends TestCase
     public function testCollectionsData()
     {
 
-        $this->assertEquals($this->collection_1->metaData()->getRequest(), $this->collection_2->metaData()->getRequest());
+        $this->assertEquals($this->collection_1->metaData()->request(), $this->collection_2->metaData()->request());
 
         // object #5 from 1st collection must be identic to object #o from second
         $object_1 = $this->collection_1->one(5);

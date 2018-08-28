@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests\unit;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoDataTest

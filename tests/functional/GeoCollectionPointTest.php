@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoCollectionPointTest
@@ -18,7 +18,7 @@ class GeoCollectionPointTest extends TestCase
     protected function setUp()
     {
 
-        $this->collection = GeoCoder::searchContext('37.600136 55.763832');
+        $this->collection = GeoCoder::searchPoint('37.600136 55.763832');
 
     } // end function
 

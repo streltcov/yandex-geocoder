@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoCollectionKindsTest
@@ -19,8 +19,8 @@ class GeoCollectionKindsTest extends TestCase
     protected function setUp()
     {
 
-        $this->kind1 = GeoCoder::searchContext('37.600136 55.763832', ['kind' => 'metro']);
-        $this->kind2 = GeoCoder::searchContext('37.600136 55.763832', ['kind' => 'house']);
+        $this->kind1 = GeoCoder::searchPoint('37.600136 55.763832', ['kind' => 'metro']);
+        $this->kind2 = GeoCoder::searchPoint('37.600136 55.763832', ['kind' => 'house']);
 
     } // end function
 
@@ -33,10 +33,10 @@ class GeoCollectionKindsTest extends TestCase
     {
 
         // checking collection data
-        $this->assertEquals('37.600136 55.763832', $this->kind1->metaData()->getRequest());
-        $this->assertEquals('metro', $this->kind1->metaData()->getKind());
-        $this->assertEquals(10, $this->kind1->metaData()->getResults());
-        $this->assertEquals(200, (int)$this->kind1->metaData()->getResponseCode());
+        $this->assertEquals('37.600136 55.763832', $this->kind1->metaData()->request());
+        $this->assertEquals('metro', $this->kind1->metaData()->kind());
+        $this->assertEquals(10, $this->kind1->metaData()->results());
+        $this->assertEquals(200, (int)$this->kind1->metaData()->responseCode());
         //$this->assertEquals();
 
         // receiving geoobjects array
@@ -49,7 +49,7 @@ class GeoCollectionKindsTest extends TestCase
         }
 
         // testing global parameters - must be dropped to defaults
-        $testcollection = GeoCoder::searchContext('37.600136 55.763832')->all();
+        $testcollection = GeoCoder::searchPoint('37.600136 55.763832')->all();
 
         // kind should not be 'metro'
         foreach ($testcollection as $object) {

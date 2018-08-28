@@ -13,8 +13,10 @@
     },
     "autoload": {
         "psr-4": {
-            "streltcov\\YandexGeocoder\\": "",
+            "streltcov\\": "",
+            "streltcov\\YandexUtils\\": "",
             "streltcov\\geocoder\\": "src",
+            "streltcov\\geocoder\\traits\\": "/src/traits",
             "streltcov\\geocoder\\collections\\": "/src/collections",
             "streltcov\\geocoder\\bin\\": "/src/bin",
             "streltcov\\geocoder\\components\\": "/src/components",

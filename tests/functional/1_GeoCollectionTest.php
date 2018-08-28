@@ -3,8 +3,7 @@
 namespace streltcov\geocoder\tests\unit;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
-use streltcov\geocoder\collections\GeoCollection;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoDataTest
@@ -36,7 +35,7 @@ class GeoCollectionTest_1 extends TestCase
     {
 
         $this->assertTrue($this->collection->hasExact());
-        $this->assertEquals(8, $this->collection->found());
+        $this->assertEquals(9, $this->collection->found());
         $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $this->collection->one());
         $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $this->collection->exact());
 
@@ -62,7 +61,7 @@ class GeoCollectionTest_1 extends TestCase
     public function testAll()
     {
 
-        $this->assertEquals(8, count($this->all));
+        $this->assertEquals(9, count($this->all));
 
     } // end function
 

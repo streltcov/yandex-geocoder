@@ -29,7 +29,7 @@ Normally Yandex-Geocoder returns several (up to 10) results with
     
     // searching geocontext with coordinates
     // will return first instance in geoobjects array
-    $response = GeoCoder::searchContext($coordinates)->one();
+    $response = GeoCoder::searchPoint($coordinates)->one();
 
 ### Public methods
 
@@ -38,8 +38,10 @@ Normally Yandex-Geocoder returns several (up to 10) results with
 | Static method          | Parameter     | Description |
 | --------------- |:-------------:| -----:|
 | search($address)| [string] $address | returns GeoCollection|
-| searchContext($coordinates) | [string] $coordinates | searching geocontext via coordinates; returns GeoCollection|
-| setLocality()  | [string] $locality | sets global parameter 'locality' |
+| searchPoint($coordinates, $parameters) | [string] $coordinates [array] $parameters | searching geocontext via coordinates; returns GeoCollection|
+| setLocality($locality)  | [string] $locality | sets global parameter 'locality' |
+| setKind($kind)  | [string] $kind | sets global parameter 'kind' (parameter ignored while requesting address) |
+| setSkip($skip)  | [integer] $skip | sets global parameter 'skip' |
 
 
 
@@ -51,4 +53,7 @@ Normally Yandex-Geocoder returns several (up to 10) results with
 | one() | [integer] | returns GeoObject with requested id (index in array); returns first instance with null parameter|
 | all() | null | returns array of GeoObjects |
 | select($parameters) | [array] | filters geoobjects by kind and/or id (index in array)|
-| find($query) | [string] | filters geoobjects using |
+| find($query) | [string] | filters geoobjects using substring (search matches in GeoObject properties) |
+
+
+#### GeoObject:

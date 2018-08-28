@@ -17,7 +17,7 @@
  * limitations under the License
  */
 
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 use streltcov\geocoder\Config;
 
 system('clear');
@@ -28,11 +28,11 @@ require_once $autoload;
 class CliApp
 {
 
-    private static $geodata = null;
-    private static $selected = null;
-    private static $message = null;
-    private static $command;
-    private static $menu;
+    private $geodata = null;
+    private $selected = null;
+    private $message = null;
+    private $command;
+    private $menu;
 
     private static $main_menu = [
         "1 - search geo data (address)",
@@ -76,13 +76,13 @@ class CliApp
     {
 
         system('clear');
-        $data = static::$geodata;
+        $data = $this->geodata;
         echo PHP_EOL;
         echo "     YANDEX GEOCODER" . PHP_EOL;
         echo PHP_EOL;
         echo "===========================================================================" . PHP_EOL;
         echo PHP_EOL;
-        echo "STATUS: " . static::$message . PHP_EOL;
+        echo "STATUS: " . $this->message . PHP_EOL;
         echo "===========================================================================" . PHP_EOL;
 
         if ($data != null) {
@@ -103,7 +103,7 @@ class CliApp
         echo PHP_EOL;
         echo "===========================================================================" . PHP_EOL;
         echo "***************************************************************************" . PHP_EOL;
-        echo "COMMAND: " . static::$command . PHP_EOL;
+        echo "COMMAND: " . $this->command . PHP_EOL;
         echo "***************************************************************************" . PHP_EOL;
 
     }
@@ -111,9 +111,9 @@ class CliApp
     private function plotMenu($menuname)
     {
 
-        static::$menu = static::$$menuname;
+        $this->menu = static::$$menuname;
 
-        foreach (static::$menu as $item) {
+        foreach ($this->menu as $item) {
             echo $item . PHP_EOL;
         }
 
@@ -177,10 +177,10 @@ class CliApp
                         default:
                             break;
                     }
-                    static::$message = 'Language set to ' . Config::get('lang');
+                    $this->message = 'Language set to ' . Config::get('lang');
                     break;
                 case '4':
-                    static::$message = 'locale - ' . Config::get('lang') . ", skip - " . Config::get('skip') . ", kind - " . Config::get('kind');
+                    $this->message = 'locale - ' . Config::get('lang') . ", skip - " . Config::get('skip') . ", kind - " . Config::get('kind');
                     break;
                 case '5':
                     system('clear');
@@ -203,9 +203,9 @@ class CliApp
     {
 
         if (isset($parameters)) {
-            static::$geodata = GeoCoder::searchContext($query, $parameters);
+            $this->geodata = GeoCoder::searchContext($query, $parameters);
         } else {
-            static::$geodata = GeoCoder::search($query);
+            $this->geodata = GeoCoder::search($query);
         }
 
         while(true) {
@@ -220,16 +220,16 @@ class CliApp
 
             switch ($answer) {
                 case '1':
-                    if (static::$geodata->hasExact()) {
-                        static::$selected = static::$geodata->exact();
-                        static::$message = 'Exact object selected' . PHP_EOL;
+                    if ($this->geodata->hasExact()) {
+                        $this->selected = $this->geodata->exact();
+                        $this->message = 'Exact object selected' . PHP_EOL;
                         return $this->geoObject();
                     } else {
-                        static::$message = 'No exact object in collection' . PHP_EOL;
+                        $this->message = 'No exact object in collection' . PHP_EOL;
                     }
                     break;
                 case '2':
-                    $all = static::$geodata->all();
+                    $all = $this->geodata->all();
                     echo PHP_EOL . PHP_EOL;
                     echo "Listed objects:" . PHP_EOL;
                     foreach ($all as $key => $item) {
@@ -241,17 +241,17 @@ class CliApp
                     echo PHP_EOL;
                     echo "Type number: ";
                     $number = (int)trim(fgets(STDIN));
-                    $all = static::$geodata->all();
+                    $all = $this->geodata->all();
                     if (isset($all[$number])) {
-                        static::$selected = $all[$number];
-                        static::$message = 'Selected object no.' . $number . PHP_EOL;
+                        $this->selected = $all[$number];
+                        $this->message = 'Selected object no.' . $number . PHP_EOL;
                         return $this->geoObject();
                     } else {
-                        static::$message = 'Requested object does not exist' . PHP_EOL;
+                        $this->message = 'Requested object does not exist' . PHP_EOL;
                     }
                     break;
                 case '4':
-                    false;
+                    return $this->main();
                     break;
             }
         }
@@ -266,8 +266,8 @@ class CliApp
     private function geoObject()
     {
 
-        if (static::$selected == null) {
-            static::$message = 'GeoObject is empty!' . PHP_EOL;
+        if ($this->selected == null) {
+            $this->message = 'GeoObject is empty!' . PHP_EOL;
             return;
         }
 
@@ -283,39 +283,40 @@ class CliApp
 
             switch ($answer) {
                 case '1':
-                    static::$command = static::$selected->getDescription();
+                    $this->command = $this->selected->getDescription();
                     break;
                 case '2':
-                    static::$command = static::$selected->getAddress();
+                    $this->command = $this->selected->getAddress();
                     break;
                 case '3':
-                    static::$command = static::$selected->getCountry();
+                    $this->command = $this->selected->getCountry();
                     break;
                 case '4':
-                    static::$command = static::$selected->getCoordinates();
+                    $this->command = $this->selected->getCoordinates();
                     break;
                 case '5':
-                    static::$command = static::$selected->getKind();
+                    $this->command = $this->selected->getKind();
                     break;
                 case '6':
-                    static::$command = static::$selected->getPrecision();
+                    $this->command = $this->selected->getPrecision();
                     break;
                 case '7':
-                    static::$command = static::$selected->getPostalCode();
+                    $this->command = $this->selected->getPostalCode();
                     break;
                 case '8':
-                    static::$command = static::$selected->getProvince();
+                    $this->command = $this->selected->getProvince();
                     break;
                 case '9':
-                    static::$command = static::$selected->getLocality();
+                    $this->command = $this->selected->getLocality();
                     break;
                 case '10':
-                    static::$command = static::$selected->getStreet();
+                    $this->command = $this->selected->getStreet();
                     break;
                 case '11':
+                    return $this->geoCollection($this->selected->getCoordinates());
                     break;
                 case '12':
-                    return $this->geoCollection(static::$selected->getCoordinates());
+                    return $this->geoCollection($this->selected->getCoordinates());
                     break;
                 default:
                     break;

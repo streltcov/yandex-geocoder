@@ -3,7 +3,7 @@
 namespace streltcov\geocoder\tests;
 
 use PHPUnit\Framework\TestCase;
-use streltcov\YandexGeocoder\GeoCoder;
+use streltcov\YandexUtils\GeoCoder;
 
 /**
  * Class GeoCollectionSkipKindTest
@@ -18,7 +18,7 @@ class GeoCollectionSkipKindTest extends TestCase
     protected function setUp()
     {
 
-        $this->collection = GeoCoder::searchContext('37.600136 55.763832', [
+        $this->collection = GeoCoder::searchPoint('37.600136 55.763832', [
             'lang' => 'TR',
             'kind' => 'house'
         ]);
@@ -33,7 +33,7 @@ class GeoCollectionSkipKindTest extends TestCase
     public function testCollection_1()
     {
 
-        $this->assertEquals('house', $this->collection->metaData()->getKind());
+        $this->assertEquals('house', $this->collection->metaData()->kind());
 
         $object = $this->collection->one();
         $this->assertEquals('Rusya', $object->getCountry());

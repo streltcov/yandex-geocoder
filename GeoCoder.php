@@ -1,6 +1,6 @@
 <?php
 
-namespace streltcov\YandexGeocoder;
+namespace streltcov\YandexUtils;
 
 use streltcov\geocoder\Api;
 use streltcov\geocoder\collections\GeoCollection;
@@ -50,7 +50,7 @@ class GeoCoder
      * @param string $coordinates
      * @return GeoCollection
      */
-    public static function searchContext($coordinates, $parameters = null)
+    public static function searchPoint($coordinates, $parameters = null)
     {
 
         return GeoCollection::createCollection('Context', $coordinates, $parameters);
