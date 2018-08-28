@@ -1,5 +1,6 @@
 {
     "name": "streltcov/yandex-geocoder",
+    "keywords": ["yandex", "geocoder", "geolocation"],
     "type": "library",
     "authors": [
         {
