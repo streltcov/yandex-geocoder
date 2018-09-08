@@ -36,13 +36,13 @@ class GeoCollectionSkipKindTest extends TestCase
         $this->assertEquals('house', $this->collection->metaData()->kind());
 
         $object = $this->collection->one();
-        $this->assertEquals('Rusya', $object->getCountry());
-        $this->assertEquals('Moskova', $object->getLocality());
+        $this->assertEquals('Rusya', $object->country());
+        $this->assertEquals('Moskova', $object->locality());
 
         $all = $this->collection->all();
 
         foreach ($all as $item) {
-            $this->assertEquals('Rusya', $item->getCountry());
+            $this->assertEquals('Rusya', $item->country());
         }
 
     } // end function

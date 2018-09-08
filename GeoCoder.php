@@ -3,8 +3,8 @@
 namespace streltcov\YandexUtils;
 
 use streltcov\geocoder\Api;
-use streltcov\geocoder\collections\GeoCollection;
 use streltcov\geocoder\Config;
+use streltcov\geocoder\collections\GeoCollection;
 
 /**
  * Copyright 2018 Peter Streltsov
@@ -88,7 +88,7 @@ class GeoCoder
      * @param string $kind
      * @return boolean
      */
-    public static function kind(string $kind)
+    public static function kind($kind)
     {
         if (Config::setKind($kind)) {
             return true;
@@ -99,6 +99,7 @@ class GeoCoder
     } // end function
 
 
+
     /**
      * sets global 'skip' parameter
      * will be applied to all queries
@@ -106,7 +107,7 @@ class GeoCoder
      * @param int $skip
      * @return boolean
      */
-    public static function skip(int $skip)
+    public static function skip($skip)
     {
         if (Config::setSkip($skip)) {
             return true;

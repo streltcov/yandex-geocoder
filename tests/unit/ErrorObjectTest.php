@@ -41,16 +41,16 @@ class ErrorObjectTest extends TestCase
 
         // testing default config parameters - should return null
         Config::setError(false);
-        $this->assertEquals(null, $this->object->getDescription());
-        $this->assertEquals(null, $this->object->getName());
-        $this->assertEquals(null, $this->object->getStreet());
-        $this->assertEquals(null, $this->object->getLocality());
-        $this->assertEquals(null, $this->object->getAddress());
-        $this->assertEquals(null, $this->object->getPostalCode());
-        $this->assertEquals(null, $this->object->getCountry());
-        $this->assertEquals(null, $this->object->getCountryCode());
-        $this->assertEquals(null, $this->object->getPoint());
-        $this->assertEquals(null, $this->object->getProvince());
+        $this->assertEquals(null, $this->object->description());
+        $this->assertEquals(null, $this->object->name());
+        $this->assertEquals(null, $this->object->street());
+        $this->assertEquals(null, $this->object->locality());
+        $this->assertEquals(null, $this->object->address());
+        $this->assertEquals(null, $this->object->postalCode());
+        $this->assertEquals(null, $this->object->country());
+        $this->assertEquals(null, $this->object->countryCode());
+        $this->assertEquals(null, $this->object->point());
+        $this->assertEquals(null, $this->object->province());
 
     } // end function
 
@@ -64,16 +64,16 @@ class ErrorObjectTest extends TestCase
 
         // setting error to false - should return text messages
         Config::setError(true);
-        $this->assertEquals('Error, check request', $this->object->getDescription());
-        $this->assertEquals('Error, check request', $this->object->getName());
-        $this->assertEquals('Error, check request', $this->object->getStreet());
-        $this->assertEquals('Error, check request', $this->object->getLocality());
-        $this->assertEquals('Error, check request', $this->object->getAddress());
-        $this->assertEquals('Error, check request', $this->object->getPostalCode());
-        $this->assertEquals('Error, check request', $this->object->getCountry());
-        $this->assertEquals('Error, check request', $this->object->getCountryCode());
-        $this->assertEquals('Error, check request', $this->object->getPoint());
-        $this->assertEquals('Error, check request', $this->object->getProvince());
+        $this->assertEquals('Error, check request', $this->object->description());
+        $this->assertEquals('Error, check request', $this->object->name());
+        $this->assertEquals('Error, check request', $this->object->street());
+        $this->assertEquals('Error, check request', $this->object->locality());
+        $this->assertEquals('Error, check request', $this->object->address());
+        $this->assertEquals('Error, check request', $this->object->postalCode());
+        $this->assertEquals('Error, check request', $this->object->country());
+        $this->assertEquals('Error, check request', $this->object->countryCode());
+        $this->assertEquals('Error, check request', $this->object->point());
+        $this->assertEquals('Error, check request', $this->object->province());
 
     } // end function
 

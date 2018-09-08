@@ -51,8 +51,8 @@ class GeoCollectionPointTest extends TestCase
 
         $this->assertInstanceOf('streltcov\geocoder\components\GeoObject', $one);
 
-        $this->assertEquals('exact', (string)$one->getPrecision());
-        $this->assertEquals('house', (string)$one->getKind());
+        $this->assertEquals('exact', (string)$one->precision());
+        $this->assertEquals('house', (string)$one->kind());
 
     } // end function
 

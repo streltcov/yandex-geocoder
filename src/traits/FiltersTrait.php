@@ -41,10 +41,10 @@ trait FiltersTrait
 
         $selected = array_filter($selected, function ($item) use ($kinds) {
             if (is_array($kinds)) {
-                in_array($item->getKind(), $kinds) ? $answer = true : $answer = false;
+                in_array($item->kind(), $kinds) ? $answer = true : $answer = false;
                 return $answer;
             } else {
-                if ($item->getKind() == $kinds) return true;
+                if ($item->kind() == $kinds) return true;
             }
         });
 

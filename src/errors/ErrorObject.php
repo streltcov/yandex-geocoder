@@ -40,67 +40,67 @@ class ErrorObject implements GeoObjectInterface
 
     }
 
-    public function getDescription()
+    public function description()
     {
         return Config::errorMessage();
     }
 
-    public function getName()
+    public function name()
     {
         return Config::errorMessage();
     }
 
-    public function getStreet()
+    public function street()
     {
         return Config::errorMessage();
     }
 
-    public function getAddress()
+    public function address()
     {
         return Config::errorMessage();
     }
 
-    public function getLocality()
+    public function locality()
     {
         return Config::errorMessage();
     }
 
-    public function getPostalcode()
+    public function postalCode()
     {
         return Config::errorMessage();
     }
 
-    public function getCountry()
+    public function country()
     {
         return Config::errorMessage();
     }
 
-    public function getCoordinates()
+    public function coordinates()
     {
         return Config::errorMessage();
     }
 
-    public function getPoint()
+    public function point()
     {
         return Config::errorMessage();
     }
 
-    public function getCountryCode()
+    public function countryCode()
     {
         return Config::errorMessage();
     }
 
-    public function getPrecision()
+    public function precision()
     {
         return 'exact';
     }
 
-    public function getProvince()
+    public function province()
     {
         return Config::errorMessage();
     }
 
-    public function getKind()
+    public function kind()
     {
         return Config::errorMessage();
     }

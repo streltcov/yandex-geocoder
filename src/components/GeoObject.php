@@ -2,6 +2,7 @@
 
 namespace streltcov\geocoder\components;
 
+use streltcov\geocoder\collections\Context;
 use streltcov\geocoder\collections\GeoCollection;
 use streltcov\geocoder\interfaces\GeoObjectInterface;
 
@@ -194,12 +195,12 @@ class GeoObject implements GeoObjectInterface
      *
      * @param int $skip
      * @param string $kind
-     * @return ContextData
+     * @return Context
      */
     public function requestContext($kind = null, $skip = null)
     {
 
-        $coordinates = $this->getCoordinates();
+        $coordinates = $this->coordinates();
         $parameters['kind'] = $kind;
         $parameters['skip'] = $skip;
         return GeoCollection::createCollection('Context', $coordinates, $parameters);
@@ -215,7 +216,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getKind()
+    public function kind()
     {
 
         return $this->kind;
@@ -227,7 +228,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getPrecision()
+    public function precision()
     {
 
         return $this->precision;
@@ -239,7 +240,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return mixed
      */
-    public function getName()
+    public function name()
     {
 
         return $this->name;
@@ -250,7 +251,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function description()
     {
 
         return $this->description;
@@ -261,7 +262,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getAddress()
+    public function address()
     {
 
         return (string)$this->address;
@@ -273,7 +274,7 @@ class GeoObject implements GeoObjectInterface
      * returns current object coordinates (string value separated by spacebar)
      * @return string
      */
-    public function getCoordinates()
+    public function coordinates()
     {
 
         return (string)$this->coordinates;
@@ -281,7 +282,7 @@ class GeoObject implements GeoObjectInterface
     } // end function
 
 
-    public function getPostalcode()
+    public function postalCode()
     {
 
         return $this->postalcode;
@@ -292,7 +293,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getCountry()
+    public function country()
     {
 
         return $this->country;
@@ -303,7 +304,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return string
      */
-    public function getCountryCode()
+    public function countryCode()
     {
 
         return $this->countrycode;
@@ -315,7 +316,7 @@ class GeoObject implements GeoObjectInterface
     /**
      *
      */
-    public function getProvince()
+    public function province()
     {
 
         return $this->province;
@@ -327,7 +328,7 @@ class GeoObject implements GeoObjectInterface
     /**
      *
      */
-    public function getLocality()
+    public function locality()
     {
 
         return $this->locality;
@@ -338,7 +339,7 @@ class GeoObject implements GeoObjectInterface
     /**
      *
      */
-    public function getStreet()
+    public function street()
     {
 
         return $this->street;
@@ -350,7 +351,7 @@ class GeoObject implements GeoObjectInterface
     /**
      * @return array;
      */
-    public function getPoint()
+    public function point()
     {
         $point = [];
         $point['lower'] = $this->envelope->lowerCorner;
@@ -366,15 +367,15 @@ class GeoObject implements GeoObjectInterface
      */
     public function getData()
     {
-        $data['name'] = $this->getName();
-        $data['description'] = $this->getDescription();
-        $data['coordinates'] = $this->getCoordinates();
-        $data['kind'] = $this->getKind();
-        $data['country'] = $this->getCountry();
-        $data['postalcode'] = $this->getPostalcode();
-        $data['locality'] = $this->getLocality();
-        $data['address'] = $this->getAddress();
-        $data['street'] = $this->getStreet();
+        $data['name'] = $this->name();
+        $data['description'] = $this->description();
+        $data['coordinates'] = $this->coordinates();
+        $data['kind'] = $this->kind();
+        $data['country'] = $this->country();
+        $data['postalcode'] = $this->postalCode();
+        $data['locality'] = $this->locality();
+        $data['address'] = $this->address();
+        $data['street'] = $this->street();
 
         return $data;
 

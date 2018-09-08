@@ -56,17 +56,17 @@ class GeoObjectTest extends TestCase
     public function testGeoObjectBasic()
     {
 
-        $this->assertEquals('exact', $this->geo_object->getPrecision());
-        $this->assertEquals('test description', $this->geo_object->getDescription());
-        $this->assertEquals('test', $this->geo_object->getKind());
-        $this->assertEquals('11111111111111', $this->geo_object->getCoordinates());
-        $this->assertEquals('test feature member', $this->geo_object->getName());
-        $this->assertEquals(['lower' => 'left', 'upper' => 'right'], $this->geo_object->getPoint());
-        $this->assertNull($this->geo_object->getStreet());
-        $this->assertNull($this->geo_object->getLocality());
-        $this->assertNull($this->geo_object->getProvince());
+        $this->assertEquals('exact', $this->geo_object->precision());
+        $this->assertEquals('test description', $this->geo_object->description());
+        $this->assertEquals('test', $this->geo_object->kind());
+        $this->assertEquals('11111111111111', $this->geo_object->coordinates());
+        $this->assertEquals('test feature member', $this->geo_object->name());
+        $this->assertEquals(['lower' => 'left', 'upper' => 'right'], $this->geo_object->point());
+        $this->assertNull($this->geo_object->street());
+        $this->assertNull($this->geo_object->locality());
+        $this->assertNull($this->geo_object->province());
         $this->assertTrue(is_array($this->geo_object->getData()));
-        $this->assertTrue(is_array($this->geo_object->getPoint()));
+        $this->assertTrue(is_array($this->geo_object->point()));
 
     } // end function
 

@@ -45,7 +45,7 @@ class GeoCollectionKindsTest extends TestCase
         // object kind must be equal to requested
         $this->assertEquals(10, count($kind1));
         foreach ($kind1 as $object) {
-            $this->assertEquals('metro', $object->getKind());
+            $this->assertEquals('metro', $object->kind());
         }
 
         // testing global parameters - must be dropped to defaults
@@ -53,7 +53,7 @@ class GeoCollectionKindsTest extends TestCase
 
         // kind should not be 'metro'
         foreach ($testcollection as $object) {
-            $this->assertNotEquals('metro', $object->getKind());
+            $this->assertNotEquals('metro', $object->kind());
         }
 
     } // end function
@@ -70,11 +70,11 @@ class GeoCollectionKindsTest extends TestCase
         $this->assertEquals(10, count($all));
 
         foreach ($all as $object) {
-            $this->assertEquals('house', $object->getKind());
+            $this->assertEquals('house', $object->kind());
         }
 
         if ($this->kind2->hasExact()) {
-            $this->assertEquals('house', $this->kind2->exact()->getKind());
+            $this->assertEquals('house', $this->kind2->exact()->kind());
         }
 
     } // end function

@@ -36,12 +36,12 @@ interface GeoObjectInterface
     /**
      * @return string
      */
-    public function getPrecision();
+    public function precision();
 
 
     /**
      * @param string $kind
-     * @return Context
+     * @return \streltcov\geocoder\collections\Context
      */
     public function requestContext($kind);
 
@@ -54,49 +54,49 @@ interface GeoObjectInterface
     /**
      * @return mixed
      */
-    public function getName();
+    public function name();
 
 
     /**
      * @return mixed
      */
-    public function getDescription();
+    public function description();
 
 
     /**
      * @return mixed
      */
-    public function getKind();
+    public function kind();
 
 
     /**
      * @return string
      */
-    public function getPostalcode();
+    public function postalCode();
 
 
     /**
      * @return string
      */
-    public function getAddress();
+    public function address();
 
 
     /**
      * @return string
      */
-    public function getCountryCode();
+    public function countryCode();
 
 
     /**
      * @return string
      */
-    public function getCountry();
+    public function country();
 
 
     /**
      * @return string
      */
-    public function getCoordinates();
+    public function coordinates();
 
 
     /**
@@ -104,25 +104,25 @@ interface GeoObjectInterface
      *
      * @return array
      */
-    public function getPoint();
+    public function point();
 
 
     /**
      * @return string
      */
-    public function getLocality();
+    public function locality();
 
 
     /**
      * @return string
      */
-    public function getProvince();
+    public function province();
 
 
     /**
      * @return string
      */
-    public function getStreet();
+    public function street();
     
 
     /**

@@ -49,12 +49,12 @@ class GeoCollectionSkipTest extends TestCase
         // object #5 from 1st collection must be identic to object #o from second
         $object_1 = $this->collection_1->one(5);
         $object_2 = $this->collection_2->one();
-        $this->assertEquals($object_1->getName(), $object_2->getName());
-        $this->assertEquals($object_1->getKind(), $object_2->getKind());
-        $this->assertEquals($object_1->getAddress(), $object_2->getAddress());
-        $this->assertEquals($object_1->getCountry(), $object_2->getCountry());
-        $this->assertEquals($object_1->getCoordinates(), $object_2->getCoordinates());
-        $this->assertEquals($object_1->getPrecision(), $object_2->getPrecision());
+        $this->assertEquals($object_1->name(), $object_2->name());
+        $this->assertEquals($object_1->kind(), $object_2->kind());
+        $this->assertEquals($object_1->address(), $object_2->address());
+        $this->assertEquals($object_1->country(), $object_2->country());
+        $this->assertEquals($object_1->coordinates(), $object_2->coordinates());
+        $this->assertEquals($object_1->precision(), $object_2->precision());
 
     } // end function
 
